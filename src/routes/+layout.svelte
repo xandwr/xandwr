@@ -8,12 +8,12 @@
 	const title = phrases[Math.floor(Math.random() * phrases.length)];
 
 	const navItems = [
-		{ label: "projects", href: "/" },
-		{ label: "blog", href: "/" },
-		{ label: "photography", href: "/" },
-		{ label: "music", href: "/" },
-		{ label: "resume", href: "/" },
-		{ label: "other", href: "/" },
+		{ label: "projects", href: "/projects" },
+		{ label: "blog", href: "/blog" },
+		{ label: "photography", href: "/photography" },
+		{ label: "music", href: "/music" },
+		{ label: "resume", href: "/resume" },
+		{ label: "other", href: "/other" },
 	];
 
 	let expanded = $state(false);
@@ -48,13 +48,13 @@
 					class="flex flex-row gap-4"
 				>
 					<div class="flex flex-row gap-2 items-center justify-between">
-						<a href="/" class="text-white" onclick={navigate}
+						<a href="/" class="text-white drop-shadow-xs drop-shadow-black" onclick={navigate}
 							>xandwr.com</a
 						>
-						<hr class="h-full border border-white/20" />
+						<hr class="h-full border border-black/20" />
 						<p class="font-light opacity-50">
 							<span class="md:hidden">{currentLabel}</span>
-							<span class="hidden md:inline">{title}</span>
+							<span class="hidden md:inline text-black font-bold">{title}</span>
 						</p>
 					</div>
 
@@ -80,8 +80,12 @@
 								class="hidden md:block h-full border border-white/20"
 							/>
 						{/if}
-						<a href={item.href} class="text-white" onclick={navigate}
-							>{item.label}</a
+						<a
+							href={item.href}
+							class={page.url.pathname === item.href
+								? "text-blue-400 font-bold"
+								: "text-white"}
+							onclick={navigate}>{item.label}</a
 						>
 					{/each}
 				</nav>
