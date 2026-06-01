@@ -23,5 +23,49 @@
 	body {
 		height: 100%;
 		overflow: hidden;
+		/* Turn off sub-pixel smoothing where the browser honors it (macOS
+		   WebKit/Firefox). No-op on Windows/Linux, but harmless. Inherited
+		   by all descendants, so this is the site-wide text setting. */
+		-webkit-font-smoothing: none;
+		-moz-osx-font-smoothing: grayscale;
+
+		/* 98.css bundles "Pixelated MS Sans Serif" — a bitmap font that's
+		   only crisp at its native 11px and integer multiples (22, 33…).
+		   Override 98.css's `body{font-family:Arial}` so NOTHING falls back
+		   to vector Arial, and lock the base size to the 11px grid. Anything
+		   on this grid stays pixel-perfect; off-grid sizes get scaled and
+		   blur — which is why the utility overrides below matter. */
+		font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+		font-size: 11px;
 	}
+
+	/* Nearest-neighbor scaling for every raster surface site-wide, so
+	   scaled icons/screenshots/canvas stay crisp instead of blurring. This
+	   is the real "pixelated" lever — note it affects images, NOT text. */
+	img,
+	canvas,
+	video,
+	svg {
+		image-rendering: pixelated;
+		/* Safari/old-Firefox spelling of the same intent. */
+		image-rendering: -moz-crisp-edges;
+		image-rendering: crisp-edges;
+	}
+}
+
+/* Snap Tailwind's text-size utilities onto the pixel font's native grid
+   (integer multiples of 11px) so any element using text-* stays crisp
+   instead of getting bitmap-scaled to 14/16/18/20px. line-height is set
+   in px too — `rem`/unitless leading would re-introduce fractional pixel
+   rows. In the `utilities` layer so these win over Tailwind's defaults. */
+@layer utilities {
+	.text-xs   { font-size: 11px; line-height: 14px; }
+	.text-sm   { font-size: 11px; line-height: 14px; }
+	.text-base { font-size: 11px; line-height: 16px; }
+	.text-lg   { font-size: 22px; line-height: 26px; }
+	.text-xl   { font-size: 22px; line-height: 26px; }
+	.text-2xl  { font-size: 22px; line-height: 26px; }
+	.text-3xl  { font-size: 33px; line-height: 37px; }
+	.text-4xl  { font-size: 33px; line-height: 37px; }
+	.text-5xl  { font-size: 44px; line-height: 48px; }
 }
