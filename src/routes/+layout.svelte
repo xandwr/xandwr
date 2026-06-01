@@ -39,7 +39,7 @@
 <!-- Persistent full-viewport Win98 window that wraps every page. -->
 <div class="w-screen h-screen p-2 bg-black">
 	<div class="window flex h-full w-full flex-col">
-		<div class="title-bar">
+		<div class="title-bar [--title-bar-from:#ff4400] [--title-bar-to:#4422ff]">
 			<div
 				class="title-bar-text flex flex-col md:flex-row justify-between m-auto w-full px-2"
 			>

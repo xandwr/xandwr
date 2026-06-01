@@ -1,0 +1,42 @@
+/* ---------------------------------------------------------------------------
+ * Self-contained override for 98.css's `.title-bar` color.
+ *
+ * 98.css hard-codes the title bar background as:
+ *     .title-bar          { background: linear-gradient(90deg, navy, #1084d0) }
+ *     .title-bar.inactive { background: linear-gradient(90deg, grey, #b5b5b5) }
+ *
+ * Those rules live in the `ninety8` cascade layer (see global.css). This file
+ * re-declares `.title-bar`'s background in the LATER `components` layer, so it
+ * wins over 98.css without `!important`, and routes the color through CSS
+ * variables. That lets you recolor the title bar with a single Tailwind
+ * arbitrary-property utility on the element — no edits to 98.css, no patch.
+ *
+ * Usage (in markup):
+ *     <div class="title-bar [--title-bar-from:theme(colors.purple.900)]
+ *                           [--title-bar-to:theme(colors.purple.500)]">
+ * or with raw values:
+ *     <div class="title-bar [--title-bar-from:#3b0764] [--title-bar-to:#a855f7]">
+ *
+ * Leaving the variables unset keeps the original Win98 navy gradient.
+ * ------------------------------------------------------------------------- */
+
+@layer components {
+	.title-bar {
+		/* Defaults reproduce 98.css's original navy gradient. Override either
+		   stop (or the whole `--title-bar-bg`) via Tailwind utilities. */
+		--title-bar-from: navy;
+		--title-bar-to: #1084d0;
+		--title-bar-bg: linear-gradient(
+			90deg,
+			var(--title-bar-from),
+			var(--title-bar-to)
+		);
+
+		background: var(--title-bar-bg);
+	}
+
+	.title-bar.inactive {
+		--title-bar-from: grey;
+		--title-bar-to: #b5b5b5;
+	}
+}

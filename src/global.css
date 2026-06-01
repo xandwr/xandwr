@@ -10,6 +10,11 @@
    lets Vite resolve the bundled MS Sans Serif font files. */
 @import "98.css/dist/98.css" layer(ninety8);
 
+/* Self-contained recoloring of 98.css's `.title-bar`. Lives in the
+   `components` layer (after `ninety8`) so it overrides 98.css; see the file
+   for the Tailwind utilities that drive the color. */
+@import "./title-bar-theme.css" layer(components);
+
 @import "tailwindcss/utilities.css" layer(utilities);
 
 /* The app is a single full-viewport Win98 window; only its body scrolls. */
