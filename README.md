@@ -1,3 +1,3 @@
-# xandwr.com
+# xander pickering
 
-> my little corner of digital real-estate
+> my little corners of digital real-estate
