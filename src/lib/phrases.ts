@@ -1,4 +1,4 @@
-export let phrases = [
+export const phrases = [
     "welcome to hell",
     "welcome to paradise",
     "since '03",

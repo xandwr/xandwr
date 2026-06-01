@@ -4,7 +4,7 @@
 	import "../global.css";
 	
 	let { children } = $props();
-	var randomSloganIndex = phrases.length - 1;
+	const title = phrases[Math.floor(Math.random() * phrases.length)];
 </script>
 
 <svelte:head>
@@ -18,7 +18,7 @@
 			<div class="flex flex-row gap-2 justify-center items-center">
 				<a href="/" class="text-white">xandwr.com</a>
 				<hr class="h-full border border-white/20" />
-				<p class="font-light opacity-50">{phrases[randomSloganIndex]}</p>
+				<p class="font-light opacity-50">{title}</p>
 			</div>
 			
 
