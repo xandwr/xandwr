@@ -1,0 +1,22 @@
+/* Tailwind v4, split into its layers so we can slot 98.css between
+   Preflight (the base reset) and Tailwind's utilities. */
+@layer theme, base, ninety8, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+
+/* 98.css lives in its own layer *after* Preflight, so its button/input/
+   border styling wins over Tailwind's reset. Importing from the package
+   lets Vite resolve the bundled MS Sans Serif font files. */
+@import "98.css/dist/98.css" layer(ninety8);
+
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* The app is a single full-viewport Win98 window; only its body scrolls. */
+@layer base {
+	html,
+	body {
+		height: 100%;
+		overflow: hidden;
+	}
+}
