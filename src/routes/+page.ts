@@ -1,7 +1,9 @@
-import { getBlogPosts } from "$lib/content/blog";
+import { getBlogPosts, renderMarkdown } from "$lib/content/blog";
+import readme from "../../README.md?raw";
 
-export function load() {
+export async function load() {
 	return {
+		readmeHtml: await renderMarkdown(readme),
 		posts: getBlogPosts().slice(0, 3),
 	};
 }

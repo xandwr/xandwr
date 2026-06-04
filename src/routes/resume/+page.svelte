@@ -45,8 +45,6 @@
 						<span>{resume.location}</span>
 						<span aria-hidden="true">·</span>
 						<a href="mailto:{resume.email}">{resume.email}</a>
-						<span aria-hidden="true">·</span>
-						<span>{resume.phone}</span>
 						{#each resume.links as link}
 							<span aria-hidden="true">·</span>
 							<a href={link.href} target="_blank" rel="noreferrer"

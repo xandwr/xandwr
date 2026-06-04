@@ -29,7 +29,7 @@ export const resume: Resume = {
 	headline: "Computer Science Student & Developer",
 	location: "Edmonton, AB",
 	email: "ajamespickering@gmail.com",
-	phone: "+1 (780) 716-0875",
+	phone: "",
 	links: [
 		{
 			label: "linkedin.com/in/alexjpickering",

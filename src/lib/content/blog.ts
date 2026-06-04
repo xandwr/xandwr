@@ -72,6 +72,15 @@ marked.use(
 	}),
 );
 
+/**
+ * Renders an arbitrary markdown string to HTML using the same `marked`
+ * pipeline (gfm + Shiki highlighting) as the blog posts. Used by the homepage
+ * to render the repo's root README.
+ */
+export async function renderMarkdown(markdown: string): Promise<string> {
+	return marked.parse(markdown);
+}
+
 function parseFrontmatter(raw: string): {
 	frontmatter: BlogFrontmatter;
 	content: string;

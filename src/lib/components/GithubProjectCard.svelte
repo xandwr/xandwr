@@ -18,33 +18,64 @@
     }: Props = $props();
 </script>
 
-<div class="window flex flex-col w-full">
+<article
+    class="window flex flex-col w-full justify-between px-1"
+    aria-labelledby="repo-{name}"
+>
     <div class="title-bar [--title-bar-from:#005500] [--title-bar-to:#22aa55]">
-        <div class="title-bar-text truncate">{name}</div>
-        <div class="title-bar-controls">
-            <button aria-label="Minimize"></button>
-            <button aria-label="Maximize"></button>
-            <button aria-label="Close"></button>
+        <h2
+            id="repo-{name}"
+            class="title-bar-text truncate m-0 text-sm font-inherit"
+        >
+            {name}
+        </h2>
+        <div class="title-bar-controls" aria-hidden="true">
+            <button tabindex="-1" aria-label="Minimize"></button>
+            <button tabindex="-1" aria-label="Maximize"></button>
+            <button tabindex="-1" aria-label="Close"></button>
         </div>
     </div>
 
-    <div class="window-body flex flex-col gap-2">
-        <p class="m-0">{description}</p>
+    <p class="m-0">{description}</p>
 
-        <div class="flex flex-wrap items-center gap-3 text-sm">
-            <span class="flex items-center gap-1">
-                <span class="inline-block h-3 w-3 border border-black" style="background:#3178c6"></span>
-                {language}
-            </span>
-            <span>★ {stars}</span>
-            <span>⑂ {forks}</span>
+    <div>
+        <div class="window-body flex flex-col gap-2 h-min">
+            
+
+            <div class="flex flex-wrap items-center gap-3 text-sm">
+                <span class="flex items-center gap-1">
+                    <span
+                        class="inline-block h-3 w-3 border border-black"
+                        style="background:#3178c6"
+                        aria-hidden="true"
+                    ></span>
+                    <span>Language: {language}</span>
+                </span>
+                <span>{stars} {stars === 1 ? "star" : "stars"}</span>
+                <span>{forks} {forks === 1 ? "fork" : "forks"}</span>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <p
+                class="status-bar-field flex-1 transition-all overflow-hidden text-nowrap hover:overflow-auto scroll-m-0 scrollbar-thin"
+                aria-hidden="true"
+            >
+                {url}
+            </p>
+            <p class="status-bar-field">
+                <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-sm hover:text-base"
+                >
+                    Open <span aria-hidden="true">↗</span>
+                    <span class="sr-only"
+                        >{name} on GitHub (opens in a new tab)</span
+                    >
+                </a>
+            </p>
         </div>
     </div>
-
-    <div class="status-bar">
-        <p class="status-bar-field flex-1 truncate">{url}</p>
-        <p class="status-bar-field">
-            <a href={url} target="_blank" rel="noopener noreferrer">Open ↗</a>
-        </p>
-    </div>
-</div>
+</article>
