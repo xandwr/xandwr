@@ -19,7 +19,9 @@ export function personJsonLd() {
 		"@type": "Person",
 		"@id": `${site.url}/#person`,
 		name: site.author,
-		alternateName: resume.name,
+		// Every other name this identity goes by, so an agent reading the graph
+		// can reconcile "Alexander" / the stylized handle with the canonical name.
+		alternateName: [site.legalName, resume.name],
 		jobTitle: resume.headline,
 		description: resume.about,
 		email: `mailto:${resume.email}`,
