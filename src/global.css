@@ -2,6 +2,29 @@
    Preflight (the base reset) and Tailwind's utilities. */
 @layer theme, base, ninety8, components, utilities;
 
+/* W95FA: a *vector* (OTF) recreation of the Win98 UI font. Unlike 98.css's
+   bundled "Pixelated MS Sans Serif" bitmap — which is only crisp at 11px and
+   integer multiples and blurs at any fractional browser zoom / HiDPI scale —
+   this scales cleanly at any size or device-pixel-ratio. Used as the primary
+   family site-wide so the retro look stays sharp regardless of zoom. */
+@font-face {
+	font-family: "W95FA";
+	src: url("./lib/assets/W95F.otf") format("opentype");
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* BigBlue Terminal 437 — a DOS/IBM-PC bitmap-style monospace, used only for
+   the Shiki-highlighted code blocks so they read as a retro terminal. */
+@font-face {
+	font-family: "BigBlueTerm437";
+	src: url("./lib/assets/BigBlueTerm437.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/preflight.css" layer(base);
 
@@ -14,6 +37,29 @@
    `components` layer (after `ninety8`) so it overrides 98.css; see the file
    for the Tailwind utilities that drive the color. */
 @import "./title-bar-theme.css" layer(components);
+
+/* 98.css hard-codes `font-family:"Pixelated MS Sans Serif",Arial` on each
+   widget (.window, .title-bar, button, input, table, …). Those element-level
+   rules beat the body inheritance, so without this they'd keep using the blurry
+   bitmap font even though the body now defaults to W95FA. Re-point the same
+   selectors at W95FA from the `components` layer (after `ninety8`) so every
+   Win98 widget renders with the crisp vector face. `code` stays monospace. */
+@layer components {
+	.title-bar,
+	.window,
+	button,
+	input,
+	label,
+	legend,
+	li[role="tab"],
+	option,
+	select,
+	table,
+	textarea,
+	ul.tree-view {
+		font-family: "W95FA", "Pixelated MS Sans Serif", Arial, sans-serif;
+	}
+}
 
 @import "tailwindcss/utilities.css" layer(utilities);
 
@@ -29,13 +75,11 @@
 		-webkit-font-smoothing: none;
 		-moz-osx-font-smoothing: grayscale;
 
-		/* 98.css bundles "Pixelated MS Sans Serif" — a bitmap font that's
-		   only crisp at its native 11px and integer multiples (22, 33…).
-		   Override 98.css's `body{font-family:Arial}` so NOTHING falls back
-		   to vector Arial, and lock the base size to the 11px grid. Anything
-		   on this grid stays pixel-perfect; off-grid sizes get scaled and
-		   blur — which is why the utility overrides below matter. */
-		font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+		/* W95FA is a vector OTF, so it stays crisp at any size or zoom — no
+		   11px-grid requirement. Falls back to 98.css's bitmap "Pixelated MS
+		   Sans Serif" then Arial. Overrides 98.css's `body{font-family:Arial}`
+		   so nothing lands on vector Arial as the primary face. */
+		font-family: "W95FA", "Pixelated MS Sans Serif", Arial, sans-serif;
 		font-size: 11px;
 	}
 
@@ -51,21 +95,4 @@
 		image-rendering: -moz-crisp-edges;
 		image-rendering: crisp-edges;
 	}
-}
-
-/* Snap Tailwind's text-size utilities onto the pixel font's native grid
-   (integer multiples of 11px) so any element using text-* stays crisp
-   instead of getting bitmap-scaled to 14/16/18/20px. line-height is set
-   in px too — `rem`/unitless leading would re-introduce fractional pixel
-   rows. In the `utilities` layer so these win over Tailwind's defaults. */
-@layer utilities {
-	.text-xs   { font-size: 11px; line-height: 14px; }
-	.text-sm   { font-size: 11px; line-height: 14px; }
-	.text-base { font-size: 11px; line-height: 16px; }
-	.text-lg   { font-size: 22px; line-height: 26px; }
-	.text-xl   { font-size: 22px; line-height: 26px; }
-	.text-2xl  { font-size: 22px; line-height: 26px; }
-	.text-3xl  { font-size: 33px; line-height: 37px; }
-	.text-4xl  { font-size: 33px; line-height: 37px; }
-	.text-5xl  { font-size: 44px; line-height: 48px; }
 }

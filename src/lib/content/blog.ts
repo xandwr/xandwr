@@ -1,4 +1,6 @@
 import { marked } from "marked";
+import markedShiki from "marked-shiki";
+import { createHighlighter } from "shiki";
 
 import piFromMyBirthday from "./blog/pi-from-my-birthday.md?raw";
 
@@ -29,9 +31,31 @@ const postSources = [
 	},
 ];
 
+const highlighter = await createHighlighter({
+	themes: ["github-dark"],
+	langs: ["python", "typescript", "javascript", "bash", "json", "html", "css"],
+});
+
 marked.use({
 	gfm: true,
 });
+
+marked.use(
+	markedShiki({
+		highlight(code, lang) {
+			const language = highlighter
+				.getLoadedLanguages()
+				.includes(lang as never)
+				? lang
+				: "text";
+
+			return highlighter.codeToHtml(code, {
+				lang: language,
+				theme: "github-dark",
+			});
+		},
+	}),
+);
 
 function parseFrontmatter(raw: string): {
 	frontmatter: BlogFrontmatter;
@@ -59,7 +83,9 @@ function parseFrontmatter(raw: string): {
 	};
 }
 
-function parsePost(source: (typeof postSources)[number]): BlogPost {
+async function parsePost(
+	source: (typeof postSources)[number],
+): Promise<BlogPost> {
 	const { frontmatter, content } = parseFrontmatter(source.raw);
 
 	return {
@@ -69,13 +95,13 @@ function parsePost(source: (typeof postSources)[number]): BlogPost {
 		published: frontmatter.published,
 		lastEdited: frontmatter["last-edited"] ?? frontmatter.published,
 		content,
-		html: marked.parse(content, { async: false }),
+		html: await marked.parse(content),
 	};
 }
 
-const posts = postSources
-	.map(parsePost)
-	.sort((a, b) => b.published.localeCompare(a.published));
+const posts = (await Promise.all(postSources.map(parsePost))).sort((a, b) =>
+	b.published.localeCompare(a.published),
+);
 
 export function getBlogPosts(): BlogPostSummary[] {
 	return posts.map(({ content, html, ...summary }) => summary);

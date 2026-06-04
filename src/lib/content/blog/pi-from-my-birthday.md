@@ -11,9 +11,7 @@ DOB: June 24, 2003 → `2003-06-24`
 - `06 = 3!`
 - `24 = 4!`
 
----
-
-month is `3!`. day is `4!`. `2003` is prime.
+`2003` is also a prime number.
 
 ## setup: a birthday made of factorials
 

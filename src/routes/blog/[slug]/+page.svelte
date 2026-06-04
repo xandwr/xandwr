@@ -91,6 +91,29 @@
 		line-height: 14px;
 	}
 
+	/* Shiki-highlighted code blocks */
+	.blog-post :global(pre.shiki) {
+		padding: 10px 12px;
+		border: 1px solid #000;
+		box-shadow: inset -1px -1px #555, inset 1px 1px #fff;
+		background: #0d1117 !important;
+	}
+
+	/* BigBlue Terminal 437 for code blocks — the retro-terminal monospace.
+	   `code,code *` in 98.css forces monospace, so set it on the inner spans
+	   too. font-feature-settings off keeps the bitmap glyphs literal. */
+	.blog-post :global(pre.shiki code),
+	.blog-post :global(pre.shiki code span) {
+		font-family: "BigBlueTerm437", monospace;
+	}
+
+	.blog-post :global(pre.shiki code) {
+		display: block;
+		background: transparent !important;
+		font-size: 14px;
+		line-height: 18px;
+	}
+
 	.blog-post :global(hr) {
 		border: 0;
 		border-top: 1px solid gray;
