@@ -24,7 +24,9 @@
 	},
 	"dependencies": {
 		"98.css": "^0.1.21",
+		"@iconify/svelte": "^5.2.1",
 		"@tailwindcss/vite": "^4.3.0",
+		"github-language-colors": "^1.0.0",
 		"marked": "^18.0.4",
 		"marked-shiki": "^1.2.1",
 		"shiki": "^4.2.0",

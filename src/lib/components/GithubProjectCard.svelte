@@ -1,4 +1,7 @@
 <script lang="ts">
+    import Icon from "@iconify/svelte";
+    import { languageColor, languageIcon } from "$lib/languages";
+
     interface Props {
         name?: string;
         description?: string;
@@ -16,6 +19,9 @@
         forks = 0,
         url = "#",
     }: Props = $props();
+
+    const icon = $derived(languageIcon(language));
+    const color = $derived(languageColor(language));
 </script>
 
 <article
@@ -44,11 +50,20 @@
 
             <div class="flex flex-wrap items-center gap-3 text-sm">
                 <span class="flex items-center gap-1">
-                    <span
-                        class="inline-block h-3 w-3 border border-black"
-                        style="background:#3178c6"
-                        aria-hidden="true"
-                    ></span>
+                    {#if icon}
+                        <Icon
+                            icon="devicon:{icon}"
+                            width="16"
+                            height="16"
+                            aria-hidden="true"
+                        />
+                    {:else}
+                        <span
+                            class="inline-block h-3 w-3 border border-black"
+                            style="background:{color}"
+                            aria-hidden="true"
+                        ></span>
+                    {/if}
                     <span>Language: {language}</span>
                 </span>
                 <span>{stars} {stars === 1 ? "star" : "stars"}</span>
