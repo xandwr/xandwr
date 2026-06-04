@@ -36,6 +36,65 @@ interface FetchOptions {
 	excludeForks?: boolean;
 }
 
+/** Shared request headers for the GitHub REST API. */
+function ghHeaders(token?: string): Record<string, string> {
+	const headers: Record<string, string> = {
+		Accept: "application/vnd.github+json",
+		"X-GitHub-Api-Version": "2022-11-28",
+		// GitHub rejects API requests without a User-Agent (403 "Request
+		// forbidden by administrative rules"). Cloudflare Workers don't set a
+		// default one, so we must provide it explicitly.
+		"User-Agent": "xandwr.com",
+	};
+	if (token) headers.Authorization = `Bearer ${token}`;
+	return headers;
+}
+
+/** Maps a raw GitHub repo payload to the trimmed shape the UI renders. */
+function toRepo(r: GithubRepo): Repo {
+	return {
+		name: r.name,
+		description: r.description ?? "No description provided.",
+		language: r.language ?? "—",
+		stars: r.stargazers_count,
+		forks: r.forks_count,
+		url: r.html_url,
+	};
+}
+
+/**
+ * Fetches a single repo by `owner/name` slug — the lookup behind the curated
+ * projects page. Returns `null` when the repo is missing or private (404), so
+ * callers can fall back to locally-cached frontmatter; throws on other
+ * non-OK responses (e.g. a 403 rate-limit) so they can be surfaced/cached.
+ */
+export async function fetchRepo(
+	slug: string,
+	fetchFn: typeof fetch,
+	{ token }: { token?: string } = {}
+): Promise<Repo | null> {
+	const [owner, name] = slug.split("/");
+	if (!owner || !name) {
+		throw new Error(`Invalid repo slug "${slug}" (expected "owner/name").`);
+	}
+
+	const res = await fetchFn(
+		`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(name)}`,
+		{ headers: ghHeaders(token) }
+	);
+
+	// A private or non-existent repo reads as 404 — the signal that a curated
+	// PROJECT.md points at something that isn't a public repo.
+	if (res.status === 404) return null;
+
+	if (!res.ok) {
+		const body = await res.text();
+		throw new Error(`GitHub API ${res.status} for "${slug}": ${body.slice(0, 200)}`);
+	}
+
+	return toRepo((await res.json()) as GithubRepo);
+}
+
 /**
  * Returns the user's public repos, most-recently-pushed first.
  * Throws on a non-OK response so the load function can surface the error.
@@ -45,20 +104,10 @@ export async function fetchRepos(
 	fetchFn: typeof fetch,
 	{ token, excludeForks = true }: FetchOptions = {}
 ): Promise<Repo[]> {
-	const headers: Record<string, string> = {
-		Accept: "application/vnd.github+json",
-		"X-GitHub-Api-Version": "2022-11-28",
-		// GitHub rejects API requests without a User-Agent (403 "Request
-		// forbidden by administrative rules"). Cloudflare Workers don't set a
-		// default one, so we must provide it explicitly.
-		"User-Agent": "xandwr.com"
-	};
-	if (token) headers.Authorization = `Bearer ${token}`;
-
 	// per_page=100 grabs everything in one request for any realistic account.
 	const res = await fetchFn(
 		`https://api.github.com/users/${encodeURIComponent(user)}/repos?per_page=100&sort=pushed`,
-		{ headers }
+		{ headers: ghHeaders(token) }
 	);
 
 	if (!res.ok) {
@@ -71,12 +120,5 @@ export async function fetchRepos(
 	return repos
 		.filter((r) => (excludeForks ? !r.fork && !r.archived : true))
 		.sort((a, b) => b.pushed_at.localeCompare(a.pushed_at))
-		.map((r) => ({
-			name: r.name,
-			description: r.description ?? "No description provided.",
-			language: r.language ?? "—",
-			stars: r.stargazers_count,
-			forks: r.forks_count,
-			url: r.html_url
-		}));
+		.map(toRepo);
 }

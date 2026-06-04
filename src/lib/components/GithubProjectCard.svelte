@@ -9,6 +9,14 @@
         stars?: number;
         forks?: number;
         url?: string;
+        /** Optional live/demo link (video, deployed app) distinct from the repo. */
+        demo?: string;
+        /** Hero media: a /static path or absolute URL. */
+        cover?: string;
+        /** Slug of a long-form build log in /blog, if one exists. */
+        writeup?: string;
+        /** Free-form tags shown as chips. */
+        tags?: string[];
     }
 
     let {
@@ -18,6 +26,10 @@
         stars = 0,
         forks = 0,
         url = "#",
+        demo,
+        cover,
+        writeup,
+        tags = [],
     }: Props = $props();
 
     const icon = $derived(languageIcon(language));
@@ -42,12 +54,32 @@
         </div>
     </div>
 
-    <p class="m-0">{description}</p>
+    {#if cover}
+        <img
+            src={cover}
+            alt=""
+            loading="lazy"
+            class="mt-1 w-full border border-black object-cover"
+            style="aspect-ratio: 16 / 9"
+        />
+    {/if}
+
+    <p class="m-0 mt-1">{description}</p>
+
+    {#if tags.length > 0}
+        <div class="mt-1 flex flex-wrap gap-1" aria-label="Tags">
+            {#each tags as tag (tag)}
+                <span
+                    class="border border-black px-1 text-xs"
+                    style="box-shadow: inset -1px -1px #888, inset 1px 1px #fff"
+                    >{tag}</span
+                >
+            {/each}
+        </div>
+    {/if}
 
     <div>
         <div class="window-body flex flex-col gap-2 h-min">
-            
-
             <div class="flex flex-wrap items-center gap-3 text-sm">
                 <span class="flex items-center gap-1">
                     {#if icon}
@@ -69,6 +101,26 @@
                 <span>{stars} {stars === 1 ? "star" : "stars"}</span>
                 <span>{forks} {forks === 1 ? "fork" : "forks"}</span>
             </div>
+
+            {#if writeup || demo}
+                <div class="flex flex-wrap gap-3 text-sm">
+                    {#if writeup}
+                        <a href="/blog/{writeup}" class="hover:text-base">
+                            Read the writeup <span aria-hidden="true">→</span>
+                        </a>
+                    {/if}
+                    {#if demo}
+                        <a
+                            href={demo}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="hover:text-base"
+                        >
+                            Demo <span aria-hidden="true">↗</span>
+                        </a>
+                    {/if}
+                </div>
+            {/if}
         </div>
 
         <div class="status-bar">
