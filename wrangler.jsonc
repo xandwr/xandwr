@@ -1,0 +1,27 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "personal-website",
+	"main": ".svelte-kit/cloudflare/_worker.js",
+	"compatibility_date": "2025-06-01",
+	// nodejs_als provides AsyncLocalStorage, which SvelteKit's Cloudflare
+	// adapter relies on for request-scoped state during SSR.
+	"compatibility_flags": ["nodejs_als"],
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".svelte-kit/cloudflare"
+	},
+	"observability": {
+		"enabled": true
+	},
+	// Serve the Worker on the apex and www of the existing xandwr.com zone.
+	"routes": [
+		{
+			"pattern": "xandwr.com",
+			"custom_domain": true
+		},
+		{
+			"pattern": "www.xandwr.com",
+			"custom_domain": true
+		}
+	]
+}

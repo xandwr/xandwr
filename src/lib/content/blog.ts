@@ -1,6 +1,16 @@
 import { marked } from "marked";
 import markedShiki from "marked-shiki";
-import { createHighlighter } from "shiki";
+import { createHighlighterCore } from "shiki/core";
+import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
+
+import githubDark from "shiki/themes/github-dark.mjs";
+import python from "shiki/langs/python.mjs";
+import typescript from "shiki/langs/typescript.mjs";
+import javascript from "shiki/langs/javascript.mjs";
+import bash from "shiki/langs/bash.mjs";
+import json from "shiki/langs/json.mjs";
+import html from "shiki/langs/html.mjs";
+import css from "shiki/langs/css.mjs";
 
 import piFromMyBirthday from "./blog/pi-from-my-birthday.md?raw";
 
@@ -31,9 +41,14 @@ const postSources = [
 	},
 ];
 
-const highlighter = await createHighlighter({
-	themes: ["github-dark"],
-	langs: ["python", "typescript", "javascript", "bash", "json", "html", "css"],
+// Use Shiki's core API with the JavaScript RegExp engine instead of the
+// default WASM (Oniguruma) engine: Cloudflare Workers disallow runtime
+// WebAssembly.instantiate, which crashes the WASM engine on every render.
+// Themes and languages are imported statically so nothing loads at runtime.
+const highlighter = await createHighlighterCore({
+	themes: [githubDark],
+	langs: [python, typescript, javascript, bash, json, html, css],
+	engine: createJavaScriptRegexEngine(),
 });
 
 marked.use({

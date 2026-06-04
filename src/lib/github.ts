@@ -47,7 +47,11 @@ export async function fetchRepos(
 ): Promise<Repo[]> {
 	const headers: Record<string, string> = {
 		Accept: "application/vnd.github+json",
-		"X-GitHub-Api-Version": "2022-11-28"
+		"X-GitHub-Api-Version": "2022-11-28",
+		// GitHub rejects API requests without a User-Agent (403 "Request
+		// forbidden by administrative rules"). Cloudflare Workers don't set a
+		// default one, so we must provide it explicitly.
+		"User-Agent": "xandwr.com"
 	};
 	if (token) headers.Authorization = `Bearer ${token}`;
 
