@@ -1,9 +1,12 @@
 <script lang="ts">
     import JsonLd from "$lib/components/JsonLd.svelte";
+    import Seo from "$lib/components/Seo.svelte";
     import type { PageData } from "./$types";
 
     let { data }: { data: PageData } = $props();
 </script>
+
+<Seo />
 
 <JsonLd data={data.jsonLd} />
 

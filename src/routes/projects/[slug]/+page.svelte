@@ -1,8 +1,8 @@
 <script lang="ts">
     import Icon from "@iconify/svelte";
     import JsonLd from "$lib/components/JsonLd.svelte";
+    import Seo from "$lib/components/Seo.svelte";
     import { languageColor, languageIcon } from "$lib/languages";
-    import { site } from "$lib/site";
     import type { PageData } from "./$types";
 
     let { data }: { data: PageData } = $props();
@@ -12,10 +12,7 @@
     const color = $derived(languageColor(project.language));
 </script>
 
-<svelte:head>
-    <title>{project.name} | {site.name}</title>
-    <meta name="description" content={project.description} />
-</svelte:head>
+<Seo title={project.name} description={project.description} />
 
 <JsonLd data={data.jsonLd} />
 

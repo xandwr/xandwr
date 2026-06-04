@@ -1,6 +1,7 @@
 <script lang="ts">
     import GithubProjectCard from "$lib/components/GithubProjectCard.svelte";
-    import { abs } from "$lib/site";
+    import Seo from "$lib/components/Seo.svelte";
+    import { abs, site } from "$lib/site";
     import type { PageData } from "./$types";
 
     let { data }: { data: PageData } = $props();
@@ -32,6 +33,11 @@
             : null,
     );
 </script>
+
+<Seo
+    title="projects"
+    description="Things I've built — a curated set of {site.author}'s projects and writeups."
+/>
 
 <svelte:head>
     {#if jsonLd}

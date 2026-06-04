@@ -1,13 +1,12 @@
 <script lang="ts">
     import JsonLd from "$lib/components/JsonLd.svelte";
+    import Seo from "$lib/components/Seo.svelte";
     import type { PageData } from "./$types";
 
     let { data }: { data: PageData } = $props();
 </script>
 
-<svelte:head>
-    <title>blog | xandwr.com</title>
-</svelte:head>
+<Seo title="blog" description="Notes, writeups, and the occasional deep dive." />
 
 <JsonLd data={data.jsonLd} />
 

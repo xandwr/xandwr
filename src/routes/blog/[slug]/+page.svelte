@@ -1,5 +1,6 @@
 <script lang="ts">
 	import JsonLd from "$lib/components/JsonLd.svelte";
+	import Seo from "$lib/components/Seo.svelte";
 	import type { PageData } from "./$types";
 
 	let { data }: { data: PageData } = $props();
@@ -15,10 +16,7 @@
 	}
 </script>
 
-<svelte:head>
-	<title>{data.post.title} | xandwr.com</title>
-	<meta name="description" content={data.post.description} />
-</svelte:head>
+<Seo title={data.post.title} description={data.post.description} />
 
 <JsonLd data={data.jsonLd} />
 

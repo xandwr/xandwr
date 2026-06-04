@@ -1,4 +1,6 @@
 <script lang="ts">
+    import Seo from "$lib/components/Seo.svelte";
+
     // Frontend stub for the guestbook "wall". No backend yet: the sign-in
     // button is inert and the list renders its empty state. When wiring up:
     //   - Google OIDC handshake + signed session cookie -> `signedIn` / `me`
@@ -20,13 +22,10 @@
     const signedIn = false;
 </script>
 
-<svelte:head>
-    <title>wall | xandwr.com</title>
-    <meta
-        name="description"
-        content="A wall of real people who signed in to say something about me or my work."
-    />
-</svelte:head>
+<Seo
+    title="wall"
+    description="A wall of real people who signed in to say something about me or my work."
+/>
 
 <div class="flex h-full w-full flex-col gap-2 p-2">
     <!-- Sign-in / post box (top, natural height) -->

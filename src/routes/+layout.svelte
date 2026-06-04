@@ -38,9 +38,9 @@
 <svelte:head>
 	<link rel="icon" href={favicon} />
 
-	<!-- Site-wide defaults. Pages override <title>/description in their own
-	     <svelte:head>; later same-named tags win, so these are the fallback. -->
-	<meta name="description" content={site.description} />
+	<!-- Each route owns its <title>, description, and og/twitter title+
+	     description via <Seo>. The tags below are the site-wide constants
+	     that don't change per page. -->
 	<meta name="author" content={site.author} />
 	<link rel="canonical" href={canonical} />
 
@@ -56,15 +56,11 @@
 	<!-- Open Graph -->
 	<meta property="og:type" content="website" />
 	<meta property="og:site_name" content={site.name} />
-	<meta property="og:title" content={site.name} />
-	<meta property="og:description" content={site.description} />
 	<meta property="og:url" content={canonical} />
 	<meta property="og:locale" content={site.locale} />
 
 	<!-- Twitter -->
 	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:title" content={site.name} />
-	<meta name="twitter:description" content={site.description} />
 </svelte:head>
 
 <!-- Persistent full-viewport Win98 window that wraps every page. -->
