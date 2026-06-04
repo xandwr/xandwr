@@ -16,7 +16,7 @@ export const GET: RequestHandler = () => {
 		{ loc: abs("/projects") },
 		{ loc: abs("/blog") },
 		{ loc: abs("/resume") },
-		{ loc: abs("/other") },
+		{ loc: abs("/wall") },
 		// Machine-readable surfaces.
 		{ loc: abs("/llms.txt") },
 		{ loc: abs("/llms-full.txt") },

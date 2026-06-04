@@ -16,7 +16,7 @@
 		{ label: "projects", href: "/projects" },
 		{ label: "blog", href: "/blog" },
 		{ label: "resume", href: "/resume" },
-		{ label: "other", href: "/other" },
+		{ label: "wall", href: "/wall" },
 	];
 
 	let expanded = $state(false);
