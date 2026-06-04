@@ -111,6 +111,19 @@
 										{/each}
 									</ul>
 								{/if}
+								{#if entry.links.length > 0}
+									<ul class="resume-links">
+										{#each entry.links as link}
+											<li>
+												<a
+													href={link.href}
+													target="_blank"
+													rel="noreferrer">{link.label}</a
+												>
+											</li>
+										{/each}
+									</ul>
+								{/if}
 							</div>
 						{/each}
 					</section>
@@ -238,6 +251,25 @@
 		margin-bottom: 3px;
 	}
 
+	/* Citations: clickable labels on screen, raw URLs in print (see @media). */
+	.resume-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px 12px;
+		margin: 4px 0 0;
+		padding-left: 18px;
+		list-style: none;
+		font-size: 11px;
+	}
+
+	.resume-links a {
+		color: #0044aa;
+	}
+
+	.resume-links a::before {
+		content: "↗ ";
+	}
+
 	/* ---- Print: a clean paper resume ---- */
 	@media print {
 		.resume-doc {
@@ -267,6 +299,28 @@
 
 		.resume-contact a {
 			color: #000;
+		}
+
+		/* Citations print as raw URLs (academic-style), independent of the
+		   on-screen label: hide the label text and the ↗ glyph, then emit the
+		   href via ::after so a renamed label never diverges from the printed
+		   link. */
+		.resume-links {
+			font-size: 10pt;
+		}
+
+		.resume-links a {
+			color: #000;
+			font-size: 0;
+		}
+
+		.resume-links a::before {
+			content: "";
+		}
+
+		.resume-links a::after {
+			content: attr(href);
+			font-size: 10pt;
 		}
 
 		/* On paper the stubs should read as normal timeline entries. */

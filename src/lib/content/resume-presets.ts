@@ -87,6 +87,8 @@ export type EntryView = {
 	/** True when the entry didn't match the preset and is shown as a stub. */
 	collapsed: boolean;
 	bullets: string[];
+	/** Citations carried verbatim from the source entry. Empty on stubs. */
+	links: { label: string; href: string }[];
 };
 
 export type SectionView = {
@@ -119,6 +121,7 @@ export function tailorResume(preset: Preset | null, src: Resume = resume): Resum
 					dates: entry.dates,
 					collapsed: false,
 					bullets: entry.bullets.map((b) => bulletParts(b).text),
+					links: entry.links ?? [],
 				})),
 			})),
 		};
@@ -144,6 +147,7 @@ export function tailorResume(preset: Preset | null, src: Resume = resume): Resum
 						dates: entry.dates,
 						collapsed: true,
 						bullets: [],
+						links: [],
 					};
 				}
 
@@ -178,6 +182,7 @@ export function tailorResume(preset: Preset | null, src: Resume = resume): Resum
 					dates: entry.dates,
 					collapsed: false,
 					bullets: capped,
+					links: entry.links ?? [],
 				};
 			}),
 		})),

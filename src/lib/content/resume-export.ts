@@ -118,7 +118,7 @@ export function toJsonResume(doc: ResumeView) {
 					education.push({ institution: entry.org, studyType: entry.title, area: entry.title, courses: entry.bullets, ...base });
 					break;
 				case "projects":
-					projects.push({ name: entry.title, entity: entry.org, description: entry.bullets[0] ?? "", highlights: entry.bullets, dateRange: entry.dates });
+					projects.push({ name: entry.title, entity: entry.org, description: entry.bullets[0] ?? "", highlights: entry.bullets, dateRange: entry.dates, ...(entry.links[0] ? { url: entry.links[0].href } : {}) });
 					break;
 				case "volunteer":
 					volunteer.push({ organization: entry.org, position: entry.title, ...base });
@@ -141,7 +141,9 @@ export function toJsonResume(doc: ResumeView) {
 	};
 }
 
-/** Renders a ResumeView to clean, link-free markdown. */
+/** Renders a ResumeView to clean markdown, citing each entry's links (if any)
+ *  on a trailing line so the projection round-trips the same sources the web
+ *  resume and print view show. */
 export function resumeToMarkdown(doc: ResumeView): string {
 	const lines: string[] = [];
 	lines.push(`# ${site.author}`);
@@ -157,6 +159,11 @@ export function resumeToMarkdown(doc: ResumeView): string {
 			const org = entry.location ? `${entry.org} · ${entry.location}` : entry.org;
 			lines.push("", `### ${entry.title} — ${org}`, `*${entry.dates}*`);
 			for (const bullet of entry.bullets) lines.push(`- ${bullet}`);
+			if (entry.links.length > 0) {
+				lines.push(
+					"", "Links: " + entry.links.map((l) => `[${l.label}](${l.href})`).join(" · ")
+				);
+			}
 		}
 	}
 	return lines.join("\n") + "\n";

@@ -44,6 +44,12 @@ export type ResumeEntry = {
 	/** What kind of work this entry represents; matched against presets. */
 	tags: Tag[];
 	bullets: Bullet[];
+	/**
+	 * Optional citations for this entry — a repo, live demo, or writeup. Rendered
+	 * as hyperlinks on the web resume and as raw URLs under the entry in print
+	 * (and in the markdown/JSON projections). Only shown on expanded entries.
+	 */
+	links?: { label: string; href: string }[];
 };
 
 export type ResumeSection = {
@@ -270,6 +276,12 @@ export const resume: Resume = {
 					org: "Personal Project",
 					dates: "2026",
 					tags: ["embedded", "hardware", "firmware", "software", "backend"],
+					links: [
+						{
+							label: "github.com/xandwr/GPTi84-Plus",
+							href: "https://github.com/xandwr/GPTi84-Plus",
+						},
+					],
 					bullets: [
 						{
 							text: "Soldered a Pico W wireless mainboard to a headphone cable to bridge a TI-84 to a remote server.",
