@@ -7,10 +7,10 @@
 </script>
 
 <svelte:head>
-	<title>{resume.name} — Resume | xandwr.com</title>
+	<title>{resume.name} | xandwr.com</title>
 	<meta
 		name="description"
-		content="{resume.name} — {resume.headline}. {resume.location}."
+		content="{resume.name}: {resume.headline}. {resume.location}."
 	/>
 </svelte:head>
 
