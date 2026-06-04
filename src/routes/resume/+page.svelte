@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { resume } from "$lib/content/resume";
+	import type { PageData } from "./$types";
+
+	let { data }: { data: PageData } = $props();
+
+	// `doc` is the tailored view; the preset (if any) drives which entries
+	// expand and which collapse to a one-line stub.
+	const resume = $derived(data.doc);
 
 	function print() {
 		window.print();
@@ -27,9 +33,22 @@
 		<div class="window-body resume-body flex flex-col gap-3">
 			<!-- Screen-only toolbar -->
 			<div class="status-bar no-print">
-				<p class="status-bar-field">{resume.location}</p>
 				<p class="status-bar-field">
-					Tip: print or "Save as PDF" for a clean copy
+					{#if data.preset}
+						Tailored: <strong>{data.preset.label}</strong>
+					{:else}
+						Full resume
+					{/if}
+				</p>
+				<p class="status-bar-field resume-presets">
+					<a href="/resume" class:active={!data.preset}>full</a>
+					{#each data.presets as preset}
+						<a
+							href={`/resume?preset=${preset.id}`}
+							class:active={data.preset?.id === preset.id}
+							>{preset.label}</a
+						>
+					{/each}
 				</p>
 				<button class="status-bar-print" onclick={print}>
 					🖨 Print / Save PDF
@@ -65,7 +84,10 @@
 							{section.heading}
 						</h2>
 						{#each section.entries as entry}
-							<div class="resume-entry">
+							<div
+								class="resume-entry"
+								class:collapsed={entry.collapsed}
+							>
 								<div class="resume-entry-head">
 									<div class="resume-entry-title">
 										<strong>{entry.title}</strong>
@@ -79,11 +101,13 @@
 										{entry.dates}
 									</div>
 								</div>
-								<ul class="resume-bullets">
-									{#each entry.bullets as bullet}
-										<li>{bullet}</li>
-									{/each}
-								</ul>
+								{#if entry.bullets.length > 0}
+									<ul class="resume-bullets">
+										{#each entry.bullets as bullet}
+											<li>{bullet}</li>
+										{/each}
+									</ul>
+								{/if}
 							</div>
 						{/each}
 					</section>
@@ -153,11 +177,35 @@
 		margin: 0;
 	}
 
+	/* Quick preset switcher in the toolbar. */
+	.resume-presets {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.resume-presets a {
+		color: #0044aa;
+	}
+
+	.resume-presets a.active {
+		font-weight: 700;
+		text-decoration: none;
+		color: inherit;
+	}
+
 	/* Each entry stays together when paginating. */
 	.resume-entry {
 		margin-bottom: 10px;
 		break-inside: avoid;
 		page-break-inside: avoid;
+	}
+
+	/* Collapsed (non-matching) entries: kept on screen as a dimmed one-liner
+	   so the timeline reads continuous without competing with relevant work. */
+	.resume-entry.collapsed {
+		margin-bottom: 4px;
+		opacity: 0.55;
 	}
 
 	.resume-entry-head {
@@ -216,6 +264,11 @@
 
 		.resume-contact a {
 			color: #000;
+		}
+
+		/* On paper the stubs should read as normal timeline entries. */
+		.resume-entry.collapsed {
+			opacity: 1;
 		}
 	}
 </style>
