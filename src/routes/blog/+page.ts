@@ -1,7 +1,10 @@
 import { getBlogPosts } from "$lib/content/blog";
+import { blogJsonLd } from "$lib/jsonld";
 
 export function load() {
+	const posts = getBlogPosts();
 	return {
-		posts: getBlogPosts(),
+		posts,
+		jsonLd: blogJsonLd(posts),
 	};
 }

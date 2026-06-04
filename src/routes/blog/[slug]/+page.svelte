@@ -1,4 +1,5 @@
 <script lang="ts">
+	import JsonLd from "$lib/components/JsonLd.svelte";
 	import type { PageData } from "./$types";
 
 	let { data }: { data: PageData } = $props();
@@ -18,6 +19,8 @@
 	<title>{data.post.title} | xandwr.com</title>
 	<meta name="description" content={data.post.description} />
 </svelte:head>
+
+<JsonLd data={data.jsonLd} />
 
 <div class="p-2">
 	<article class="window">

@@ -1,8 +1,13 @@
 <script lang="ts">
 	import favicon from "$lib/assets/favicon.svg";
 	import { phrases } from "$lib/phrases";
+	import { site } from "$lib/site";
 	import { page } from "$app/state";
 	import "../global.css";
+
+	// Canonical URL excludes the query string so tailored/filtered variants
+	// (e.g. /resume?preset=…) don't fragment into separate canonical pages.
+	const canonical = $derived(`${page.url.origin}${page.url.pathname}`);
 
 	let { children } = $props();
 	const title = phrases[Math.floor(Math.random() * phrases.length)];
@@ -32,6 +37,34 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+
+	<!-- Site-wide defaults. Pages override <title>/description in their own
+	     <svelte:head>; later same-named tags win, so these are the fallback. -->
+	<meta name="description" content={site.description} />
+	<meta name="author" content={site.author} />
+	<link rel="canonical" href={canonical} />
+
+	<!-- Tell agents where the machine-readable map lives. -->
+	<link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
+	<link
+		rel="alternate"
+		type="application/rss+xml"
+		href="/blog/feed.xml"
+		title="{site.author} — blog"
+	/>
+
+	<!-- Open Graph -->
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content={site.name} />
+	<meta property="og:title" content={site.name} />
+	<meta property="og:description" content={site.description} />
+	<meta property="og:url" content={canonical} />
+	<meta property="og:locale" content={site.locale} />
+
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content={site.name} />
+	<meta name="twitter:description" content={site.description} />
 </svelte:head>
 
 <!-- Persistent full-viewport Win98 window that wraps every page. -->

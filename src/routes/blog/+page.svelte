@@ -1,4 +1,5 @@
 <script lang="ts">
+    import JsonLd from "$lib/components/JsonLd.svelte";
     import type { PageData } from "./$types";
 
     let { data }: { data: PageData } = $props();
@@ -7,6 +8,8 @@
 <svelte:head>
     <title>blog | xandwr.com</title>
 </svelte:head>
+
+<JsonLd data={data.jsonLd} />
 
 <div class="flex w-full flex-col gap-2 p-2">
     <div class="window">

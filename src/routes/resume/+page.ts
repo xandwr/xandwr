@@ -1,4 +1,5 @@
 import { getPreset, presets, tailorResume } from "$lib/content/resume-presets";
+import { personJsonLd } from "$lib/jsonld";
 import type { PageLoad } from "./$types";
 
 // `?preset=<id>` selects a job-tailored, compact resume; no param renders the
@@ -11,5 +12,6 @@ export const load: PageLoad = ({ url }) => {
 		preset,
 		presets,
 		doc: tailorResume(preset),
+		jsonLd: personJsonLd(),
 	};
 };

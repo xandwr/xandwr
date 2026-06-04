@@ -1,4 +1,5 @@
 <script lang="ts">
+	import JsonLd from "$lib/components/JsonLd.svelte";
 	import type { PageData } from "./$types";
 
 	let { data }: { data: PageData } = $props();
@@ -19,6 +20,8 @@
 		content="{resume.name}: {resume.headline}. {resume.location}."
 	/>
 </svelte:head>
+
+<JsonLd data={data.jsonLd} />
 
 <!-- `resume-page` toggles the print rules in global.css that strip the
      persistent Win98 chrome/nav so the printout is a clean paper resume. -->

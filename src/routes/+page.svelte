@@ -1,8 +1,11 @@
 <script lang="ts">
+    import JsonLd from "$lib/components/JsonLd.svelte";
     import type { PageData } from "./$types";
 
     let { data }: { data: PageData } = $props();
 </script>
+
+<JsonLd data={data.jsonLd} />
 
 <div class="flex w-full h-full m-auto flex-col gap-2 p-2">
     <!-- root README -->

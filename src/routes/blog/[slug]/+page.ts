@@ -1,4 +1,5 @@
 import { getBlogPost } from "$lib/content/blog";
+import { blogPostingJsonLd } from "$lib/jsonld";
 import { error } from "@sveltejs/kit";
 
 export function load({ params }) {
@@ -10,5 +11,6 @@ export function load({ params }) {
 
 	return {
 		post,
+		jsonLd: blogPostingJsonLd(post),
 	};
 }
