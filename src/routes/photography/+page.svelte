@@ -1,3 +1,0 @@
-<div>
-    Photography
-</div>

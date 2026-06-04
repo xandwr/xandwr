@@ -96,3 +96,64 @@
 		image-rendering: crisp-edges;
 	}
 }
+
+/* ---------------------------------------------------------------------------
+   Print: turn the /resume page into a clean paper resume.
+
+   The whole app is wrapped in a persistent full-viewport Win98 `.window` (see
+   +layout.svelte) and `html,body{overflow:hidden}` — neither reachable from
+   the resume page's scoped styles. So the print reset lives here. It only
+   engages on pages that render `.resume-page`; everything is sibling-hidden
+   around it, and the Win98 chrome is flattened to plain paper.
+--------------------------------------------------------------------------- */
+@media print {
+	@page {
+		margin: 14mm 16mm;
+	}
+
+	html,
+	body {
+		height: auto !important;
+		overflow: visible !important;
+		background: #fff !important;
+		color: #000 !important;
+		font-size: 11pt;
+	}
+
+	/* Anything explicitly screen-only. */
+	.no-print {
+		display: none !important;
+	}
+
+	/* When a resume page is present, hide everything outside it: walk up from
+	   `.resume-page` hiding siblings, then un-hide the resume's own ancestors
+	   so the document itself still renders. */
+	body:has(.resume-page) * {
+		visibility: hidden;
+	}
+	body:has(.resume-page) .resume-page,
+	body:has(.resume-page) .resume-page * {
+		visibility: visible;
+	}
+	.resume-page {
+		position: absolute;
+		inset: 0;
+		padding: 0 !important;
+	}
+
+	/* Flatten Win98 chrome on the resume window: no silver, no bevels, no
+	   borders — just black text on white paper. */
+	.resume-page .window,
+	.resume-page .window-body {
+		background: #fff !important;
+		box-shadow: none !important;
+		border: 0 !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
+	/* Never print a URL after links — keep the contact line tidy. */
+	a[href]::after {
+		content: "" !important;
+	}
+}

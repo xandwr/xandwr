@@ -10,8 +10,6 @@
 	const navItems = [
 		{ label: "projects", href: "/projects" },
 		{ label: "blog", href: "/blog" },
-		{ label: "photography", href: "/photography" },
-		{ label: "music", href: "/music" },
 		{ label: "resume", href: "/resume" },
 		{ label: "other", href: "/other" },
 	];
@@ -53,14 +51,14 @@
 						>
 							<a
 								href="/"
-								class="text-white drop-shadow-xs drop-shadow-black"
+								class="text-white text-lg drop-shadow-xs drop-shadow-black"
 								onclick={navigate}>xandwr.com</a
 							>
 							<hr class="h-full border border-black/20" />
 							<p class="font-light opacity-50">
 								<span class="md:hidden">{currentLabel}</span>
 								<span
-									class="hidden md:inline text-black font-bold"
+									class="hidden text-lg md:inline text-black font-bold"
 									>{title}</span
 								>
 							</p>
@@ -84,7 +82,7 @@
 					</div>
 				</div>
 
-				<div class="flex gap-4">
+				<div class="flex gap-4 text-lg">
 					<nav
 						class="flex-col md:flex md:flex-row gap-2 md:gap-4 {expanded
 							? 'flex'
@@ -106,8 +104,8 @@
 						{/each}
 					</nav>
 					<div class="title-bar-controls hidden md:flex">
-						<button aria-label="Minimize"></button>
-						<button aria-label="Maximize"></button>
+						<button aria-label="Minimize" class="flex w-7 text-center"></button>
+						<button aria-label="Maximize" class="flex w-7 text-center"></button>
 					</div>
 				</div>
 			</div>

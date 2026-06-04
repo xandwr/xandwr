@@ -22,7 +22,7 @@
 <div class="p-2">
 	<article class="window">
 		<div class="title-bar [--title-bar-from:#0044aa] [--title-bar-to:#aaaacc]">
-			<div class="title-bar-text">{data.post.title}</div>
+			<div class="title-bar-text text-lg font-light">{data.post.title}</div>
 		</div>
 		<div class="window-body flex flex-col gap-3">
 			<div class="status-bar">
