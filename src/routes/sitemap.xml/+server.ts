@@ -2,6 +2,7 @@
 // discover the JSON/markdown/llms surfaces alongside the rendered pages.
 
 import { getBlogPosts } from "$lib/content/blog";
+import { projectSlugs } from "$lib/content/projects";
 import { abs } from "$lib/site";
 import type { RequestHandler } from "./$types";
 
@@ -23,6 +24,8 @@ export const GET: RequestHandler = () => {
 		{ loc: abs("/resume.json") },
 		{ loc: abs("/projects.json") },
 		{ loc: abs("/blog.json") },
+		// Curated project detail pages.
+		...projectSlugs().map((slug) => ({ loc: abs(`/projects/${slug}`) })),
 		...posts.flatMap((p) => [
 			{ loc: abs(`/blog/${p.slug}`), lastmod: p.lastEdited },
 			{ loc: abs(`/blog/${p.slug}.md`), lastmod: p.lastEdited },

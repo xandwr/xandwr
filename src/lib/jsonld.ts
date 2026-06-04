@@ -6,6 +6,7 @@
 import { resume } from "./content/resume";
 import { skillLabels } from "./content/resume-export";
 import type { BlogPostSummary, BlogPost } from "./content/blog";
+import type { CuratedProject } from "./content/projects";
 import { site, abs } from "./site";
 
 /** A schema.org Person assembled from the structured resume. */
@@ -67,6 +68,27 @@ export function blogPostingJsonLd(post: BlogPost | BlogPostSummary) {
 		mainEntityOfPage: url,
 		author: { "@type": "Person", "@id": `${site.url}/#person`, name: site.author },
 		publisher: { "@type": "Person", name: site.author },
+	};
+}
+
+/** A single curated project as a schema.org SoftwareSourceCode. */
+export function softwareSourceCodeJsonLd(project: CuratedProject) {
+	const url = abs(`/projects/${project.slug}`);
+	return {
+		"@context": "https://schema.org",
+		"@type": "SoftwareSourceCode",
+		"@id": `${url}#project`,
+		name: project.name,
+		description: project.description,
+		programmingLanguage: project.language,
+		codeRepository: project.url,
+		url,
+		keywords: project.tags.length ? project.tags : undefined,
+		author: { "@type": "Person", "@id": `${site.url}/#person`, name: site.author },
+		// A linked build-log post, if one exists.
+		...(project.writeup
+			? { subjectOf: { "@type": "BlogPosting", url: abs(`/blog/${project.writeup}`) } }
+			: {}),
 	};
 }
 

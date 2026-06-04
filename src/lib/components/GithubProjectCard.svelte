@@ -3,6 +3,8 @@
     import { languageColor, languageIcon } from "$lib/languages";
 
     interface Props {
+        /** Folder slug — links the card title to the /projects/[slug] page. */
+        slug?: string;
         name?: string;
         description?: string;
         language?: string;
@@ -20,6 +22,7 @@
     }
 
     let {
+        slug,
         name = "project-name",
         description = "No description provided.",
         language = "TypeScript",
@@ -45,7 +48,13 @@
             id="repo-{name}"
             class="title-bar-text truncate m-0 text-sm font-inherit"
         >
-            {name}
+            {#if slug}
+                <a href="/projects/{slug}" class="text-white hover:underline"
+                    >{name}</a
+                >
+            {:else}
+                {name}
+            {/if}
         </h2>
         <div class="title-bar-controls" aria-hidden="true">
             <button tabindex="-1" aria-label="Minimize"></button>

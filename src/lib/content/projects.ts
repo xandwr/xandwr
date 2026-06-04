@@ -167,6 +167,31 @@ async function merge(src: ProjectSource, repo: Repo | null): Promise<CuratedProj
 	};
 }
 
+/**
+ * Looks up a project's repo and merges it, falling back to local frontmatter on
+ * any lookup failure. Never throws — a bad repo just renders from its cache.
+ */
+async function hydrate(
+	src: ProjectSource,
+	fetchFn: typeof fetch,
+	token?: string
+): Promise<CuratedProject> {
+	let repo: Repo | null = null;
+	try {
+		repo = await fetchRepo(src.frontmatter.repo, fetchFn, { token });
+		if (repo === null) {
+			// 404 ⇒ not a public repo. Honor the curation by warning, but still
+			// render from the local cache rather than dropping it.
+			console.warn(
+				`[projects] ${src.slug}: "${src.frontmatter.repo}" is private or missing; using local fallback.`
+			);
+		}
+	} catch (e) {
+		console.warn(`[projects] ${src.slug}: GitHub lookup failed; using local fallback.`, e);
+	}
+	return merge(src, repo);
+}
+
 /** Featured first, then explicit `order` ascending, then by stars, then name. */
 function sort(a: CuratedProject, b: CuratedProject, fm: Map<string, ProjectFrontmatter>): number {
 	if (a.featured !== b.featured) return a.featured ? -1 : 1;
@@ -188,27 +213,26 @@ export async function getCuratedProjects(
 	token?: string
 ): Promise<CuratedProject[]> {
 	const fmBySlug = new Map(sources.map((s) => [s.slug, s.frontmatter]));
-
-	const projects = await Promise.all(
-		sources.map(async (src) => {
-			let repo: Repo | null = null;
-			try {
-				repo = await fetchRepo(src.frontmatter.repo, fetchFn, { token });
-				if (repo === null) {
-					// 404 ⇒ not a public repo. Honor the curation by warning, but
-					// still render from the local cache rather than dropping it.
-					console.warn(
-						`[projects] ${src.slug}: "${src.frontmatter.repo}" is private or missing; using local fallback.`
-					);
-				}
-			} catch (e) {
-				console.warn(`[projects] ${src.slug}: GitHub lookup failed; using local fallback.`, e);
-			}
-			return merge(src, repo);
-		})
-	);
-
+	const projects = await Promise.all(sources.map((src) => hydrate(src, fetchFn, token)));
 	return projects.sort((a, b) => sort(a, b, fmBySlug));
+}
+
+/**
+ * Resolves a single curated project by slug (its folder name), or `undefined`
+ * if no such folder exists. Backs the /projects/[slug] detail page.
+ */
+export async function getCuratedProject(
+	slug: string,
+	fetchFn: typeof fetch,
+	token?: string
+): Promise<CuratedProject | undefined> {
+	const src = sources.find((s) => s.slug === slug);
+	return src ? hydrate(src, fetchFn, token) : undefined;
+}
+
+/** Every known project slug — handy for prerender entries / sitemaps. */
+export function projectSlugs(): string[] {
+	return sources.map((s) => s.slug);
 }
 
 /** The curated projects flagged `featured`, for the landing/hero selection. */
