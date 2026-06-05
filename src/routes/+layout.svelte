@@ -80,9 +80,16 @@
 						>
 							<a
 								href="/"
-								class="text-white text-lg drop-shadow-xs drop-shadow-black"
-								onclick={navigate}>xandwr.com</a
+								class="flex flex-row items-center gap-2 text-white text-lg drop-shadow-xs drop-shadow-black"
+								onclick={navigate}
 							>
+								<img
+									src={favicon}
+									alt="Logo"
+									class="h-5 w-5 brightness-0 invert"
+								/>
+								xandwr.com
+							</a>
 							<hr class="h-full border border-black/20" />
 							<p class="font-light opacity-50">
 								<span class="md:hidden">{currentLabel}</span>
