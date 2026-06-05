@@ -40,10 +40,10 @@
 </script>
 
 <article
-    class="window flex flex-col w-full justify-between px-1"
+    class="window flex flex-col w-full justify-between"
     aria-labelledby="repo-{name}"
 >
-    <div class="title-bar [--title-bar-from:#005500] [--title-bar-to:#22aa55]">
+    <div class="title-bar px-2 [--title-bar-from:#005500] [--title-bar-to:#22aa55]">
         <h2
             id="repo-{name}"
             class="title-bar-text truncate m-0 text-sm font-inherit"
@@ -73,10 +73,10 @@
         />
     {/if}
 
-    <p class="m-0 mt-1">{description}</p>
+    <p class="m-0 p-2">{description}</p>
 
     {#if tags.length > 0}
-        <div class="mt-1 flex flex-wrap gap-1" aria-label="Tags">
+        <div class="ml-2 flex flex-wrap gap-1" aria-label="Tags">
             {#each tags as tag (tag)}
                 <span
                     class="border border-black px-1 text-xs"
