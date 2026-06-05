@@ -48,6 +48,8 @@ export type ProjectFrontmatter = {
 	description?: string;
 	/** Primary language. Overrides GitHub's linguist guess when set. */
 	language?: string;
+	/** Top languages (e.g. [TypeScript, CSS, HTML]). Overrides GitHub when set. */
+	languages?: string[];
 	/** Cached star count. */
 	stars?: number;
 	/** Cached fork count. */
@@ -60,6 +62,8 @@ export type CuratedProject = {
 	name: string;
 	description: string;
 	language: string;
+	/** Up to the top 3 languages by usage, most-used first. May be empty. */
+	languages: string[];
 	stars: number;
 	forks: number;
 	/** Canonical repo URL (from GitHub, or derived from the slug on fallback). */
@@ -145,15 +149,24 @@ async function merge(src: ProjectSource, repo: Repo | null): Promise<CuratedProj
 	const { slug, frontmatter: fm, body } = src;
 	const [owner, name] = fm.repo.split("/");
 
+	// Language is curatable: linguist often mislabels hardware/embedded repos
+	// (e.g. an HTML demo page), so an explicit frontmatter value wins.
+	const language = fm.language ?? repo?.language ?? "—";
+	// Top languages: curated override, then GitHub's breakdown. Always lead with
+	// the primary language and keep it to the top 3, de-duped.
+	const top = fm.languages ?? repo?.languages ?? [];
+	const languages = [...new Set([language, ...top])]
+		.filter((l) => l && l !== "—")
+		.slice(0, 3);
+
 	return {
 		slug,
 		// Curated fields win; volatile fields come from GitHub, then the cache.
 		name: fm.title ?? repo?.name ?? name,
 		description:
 			fm.tagline ?? repo?.description ?? fm.description ?? "No description provided.",
-		// Language is curatable: linguist often mislabels hardware/embedded
-		// repos (e.g. an HTML demo page), so an explicit frontmatter value wins.
-		language: fm.language ?? repo?.language ?? "—",
+		language,
+		languages,
 		stars: repo?.stars ?? fm.stars ?? 0,
 		forks: repo?.forks ?? fm.forks ?? 0,
 		url: repo?.url ?? `https://github.com/${owner}/${name}`,

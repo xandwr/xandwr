@@ -11,6 +11,8 @@ export interface Repo {
 	name: string;
 	description: string;
 	language: string;
+	/** Up to the top 3 languages by bytes, most-used first. May be empty. */
+	languages: string[];
 	stars: number;
 	forks: number;
 	url: string;
@@ -51,15 +53,44 @@ function ghHeaders(token?: string): Record<string, string> {
 }
 
 /** Maps a raw GitHub repo payload to the trimmed shape the UI renders. */
-function toRepo(r: GithubRepo): Repo {
+function toRepo(r: GithubRepo, languages: string[] = []): Repo {
 	return {
 		name: r.name,
 		description: r.description ?? "No description provided.",
 		language: r.language ?? "—",
+		languages,
 		stars: r.stargazers_count,
 		forks: r.forks_count,
 		url: r.html_url,
 	};
+}
+
+/**
+ * Fetches the language breakdown for a repo and returns the top 3 by bytes,
+ * most-used first. The `/languages` endpoint returns a `{ name: bytes }` map.
+ * Failures (rate limit, network) degrade to an empty list — the card still
+ * renders its primary `language`, so this is best-effort enrichment only.
+ */
+async function fetchLanguages(
+	owner: string,
+	name: string,
+	fetchFn: typeof fetch,
+	token?: string
+): Promise<string[]> {
+	try {
+		const res = await fetchFn(
+			`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(name)}/languages`,
+			{ headers: ghHeaders(token) }
+		);
+		if (!res.ok) return [];
+		const byBytes = (await res.json()) as Record<string, number>;
+		return Object.entries(byBytes)
+			.sort((a, b) => b[1] - a[1])
+			.slice(0, 3)
+			.map(([lang]) => lang);
+	} catch {
+		return [];
+	}
 }
 
 /**
@@ -92,7 +123,8 @@ export async function fetchRepo(
 		throw new Error(`GitHub API ${res.status} for "${slug}": ${body.slice(0, 200)}`);
 	}
 
-	return toRepo((await res.json()) as GithubRepo);
+	const languages = await fetchLanguages(owner, name, fetchFn, token);
+	return toRepo((await res.json()) as GithubRepo, languages);
 }
 
 /**
@@ -120,5 +152,7 @@ export async function fetchRepos(
 	return repos
 		.filter((r) => (excludeForks ? !r.fork && !r.archived : true))
 		.sort((a, b) => b.pushed_at.localeCompare(a.pushed_at))
-		.map(toRepo);
+		// The list view shows only the primary `language`, so we skip the extra
+		// per-repo `/languages` call here — `languages` defaults to empty.
+		.map((r) => toRepo(r));
 }

@@ -8,6 +8,8 @@
         name?: string;
         description?: string;
         language?: string;
+        /** Top languages (most-used first); falls back to `language` if empty. */
+        languages?: string[];
         stars?: number;
         forks?: number;
         url?: string;
@@ -26,6 +28,7 @@
         name = "project-name",
         description = "No description provided.",
         language = "TypeScript",
+        languages = [],
         stars = 0,
         forks = 0,
         url = "#",
@@ -35,8 +38,11 @@
         tags = [],
     }: Props = $props();
 
-    const icon = $derived(languageIcon(language));
-    const color = $derived(languageColor(language));
+    // The languages to show: the curated/GitHub list when present, otherwise
+    // just the single primary language so older cards still render something.
+    const displayLanguages = $derived(
+        languages.length > 0 ? languages : [language],
+    );
 </script>
 
 <article
@@ -90,22 +96,27 @@
     <div>
         <div class="window-body flex flex-col gap-2 h-min">
             <div class="flex flex-wrap items-center gap-3 text-sm">
-                <span class="flex items-center gap-1">
-                    {#if icon}
-                        <Icon
-                            icon="devicon:{icon}"
-                            width="16"
-                            height="16"
-                            aria-hidden="true"
-                        />
-                    {:else}
-                        <span
-                            class="inline-block h-3 w-3 border border-black"
-                            style="background:{color}"
-                            aria-hidden="true"
-                        ></span>
-                    {/if}
-                    <span>Language: {language}</span>
+                <span class="flex flex-wrap items-center gap-2" aria-label="Languages">
+                    {#each displayLanguages as lang (lang)}
+                        {@const icon = languageIcon(lang)}
+                        <span class="flex items-center gap-1">
+                            {#if icon}
+                                <Icon
+                                    icon="devicon:{icon}"
+                                    width="16"
+                                    height="16"
+                                    aria-hidden="true"
+                                />
+                            {:else}
+                                <span
+                                    class="inline-block h-3 w-3 border border-black"
+                                    style="background:{languageColor(lang)}"
+                                    aria-hidden="true"
+                                ></span>
+                            {/if}
+                            <span>{lang}</span>
+                        </span>
+                    {/each}
                 </span>
                 <span>{stars} {stars === 1 ? "star" : "stars"}</span>
                 <span>{forks} {forks === 1 ? "fork" : "forks"}</span>
