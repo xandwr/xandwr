@@ -13,6 +13,7 @@ import html from "shiki/langs/html.mjs";
 import css from "shiki/langs/css.mjs";
 
 import piFromMyBirthday from "./blog/pi-from-my-birthday.md?raw";
+import aiPsychosis from "./blog/ai-psychosis.md?raw";
 
 type BlogFrontmatter = {
 	title: string;
@@ -39,6 +40,10 @@ const postSources = [
 		slug: "pi-from-my-birthday",
 		raw: piFromMyBirthday,
 	},
+	{
+		slug: "ai-psychosis",
+		raw: aiPsychosis,
+	}
 ];
 
 // Use Shiki's core API with the JavaScript RegExp engine instead of the
