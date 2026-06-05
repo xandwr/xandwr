@@ -96,15 +96,18 @@
     <div>
         <div class="window-body flex flex-col gap-2 h-min">
             <div class="flex flex-wrap items-center gap-3 text-sm">
-                <span class="flex flex-wrap items-center gap-2" aria-label="Languages">
+                <span class="flex flex-wrap items-center gap-1" aria-label="Languages">
                     {#each displayLanguages as lang (lang)}
                         {@const icon = languageIcon(lang)}
-                        <span class="flex items-center gap-1">
+                        <span
+                            class="flex items-center gap-1 border border-black px-1"
+                            style="box-shadow: inset -1px -1px #888, inset 1px 1px #fff"
+                        >
                             {#if icon}
                                 <Icon
                                     icon="devicon:{icon}"
-                                    width="16"
-                                    height="16"
+                                    width="14"
+                                    height="14"
                                     aria-hidden="true"
                                 />
                             {:else}
