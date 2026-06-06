@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "hedgeless",
+      "description": "Cut reflexive hedging — pre-emptive alibis, needless caveats, and risk-narration that protects the assistant rather than the user.",
+      "type": "skill-md",
+      "url": "./hedgeless/SKILL.md",
+      "digest": "sha256:e0d53aeddbdcccd048b4e0494412dcc41ab5c22364687de882e8b95fafd679be"
+    }
+  ]
+}
