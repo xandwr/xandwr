@@ -42,21 +42,28 @@
 <JsonLd data={data.jsonLd} />
 
 <div class="flex w-full h-full m-auto flex-col gap-2 p-2">
-    <!-- root README -->
-    <div class="window">
-        <div class="title-bar [--title-bar-from:#0044aa] [--title-bar-to:#aaaacc]">
-            <div class="title-bar-text">README.md</div>
-        </div>
-        <div class="window-body">
-            <div class="blog-post">
-                {@html data.readmeHtml}
+    <!-- root README — the page's primary content. Wrapped in <main>/<article>
+         with real heading semantics so browser reader modes (Firefox
+         Readability, Safari Reader) recognize it as the dominant article and
+         offer their reader view. The auxiliary cards below are marked <aside>
+         (complementary) so the readability heuristic doesn't count them as
+         body prose competing with the README. -->
+    <main>
+        <article class="window">
+            <div class="title-bar [--title-bar-from:#0044aa] [--title-bar-to:#aaaacc]">
+                <div class="title-bar-text">README.md</div>
             </div>
-        </div>
-    </div>
+            <div class="window-body">
+                <div class="blog-post">
+                    {@html data.readmeHtml}
+                </div>
+            </div>
+        </article>
+    </main>
 
     <!-- now playing (client-polled; hidden until a track resolves) -->
     {#if track}
-        <div class="window">
+        <aside class="window" aria-label="Now playing on Spotify">
             <div
                 class="title-bar [--title-bar-from:#1db954] [--title-bar-to:#0a5c2a]"
             >
@@ -82,11 +89,11 @@
                     </div>
                 </a>
             </div>
-        </div>
+        </aside>
     {/if}
 
     <!-- latest posts -->
-    <div class="window">
+    <aside class="window" aria-label="Recent activity">
         <div class="title-bar [--title-bar-from:#0044aa] [--title-bar-to:#aaaacc]">
             <div class="title-bar-text">Recent Activity</div>
         </div>
@@ -106,7 +113,7 @@
                 </ul>
             {/if}
         </div>
-    </div>
+    </aside>
 </div>
 
 <style>
@@ -164,7 +171,7 @@
     }
 
     .blog-post {
-        max-width: 84ch;
+        max-width: 100%;
     }
 
     .blog-post :global(h1) {
