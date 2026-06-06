@@ -2,6 +2,7 @@
     import JsonLd from "$lib/components/JsonLd.svelte";
     import Seo from "$lib/components/Seo.svelte";
     import type { NowPlaying } from "$lib/spotify";
+    import { lissajous } from "$lib/lissajous.svelte";
     import { onMount } from "svelte";
     import type { PageData } from "./$types";
 
@@ -16,6 +17,17 @@
     // The README's "schizo ramblings" easter egg lives below a `...` marker in
     // the source. Hidden until the visitor clicks the ellipsis to UNLOCK it.
     let unlocked = $state(false);
+
+    // Meta layer: unlocking the ramblings also brings the layout's title-bar
+    // Lissajous color animation to life (collapsed → plain Win98 blue). The
+    // animation lives in +layout.svelte, so we relay the state through a shared
+    // rune. Reset it on unmount so leaving the homepage stops the animation.
+    $effect(() => {
+        lissajous.active = unlocked;
+    });
+    onMount(() => () => {
+        lissajous.active = false;
+    });
 
     onMount(() => {
         let alive = true;

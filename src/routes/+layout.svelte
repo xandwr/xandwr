@@ -2,6 +2,7 @@
 	import favicon from "$lib/assets/favicon.svg";
 	import { phrases } from "$lib/phrases";
 	import { site } from "$lib/site";
+	import { lissajous } from "$lib/lissajous.svelte";
 	import { page } from "$app/state";
 	import { onMount } from "svelte";
 	import "../global.css";
@@ -25,13 +26,22 @@
 
 	onMount(() => {
 		title = phrases[Math.floor(Math.random() * phrases.length)];
+	});
 
-		// Respect users who'd rather not have motion. Bail and keep the static
-		// initial colors from the markup.
+	// The Lissajous color sweep runs only while the homepage easter egg is
+	// unlocked (`lissajous.active`). Collapsed/elsewhere → the title bar keeps
+	// the static plain Win98 blue from the markup. This effect re-runs whenever
+	// `lissajous.active` flips: it starts the rAF loop on activation and, on
+	// cleanup, cancels it and strips the inline color overrides so the bar
+	// reverts to the markup default.
+	$effect(() => {
+		if (!lissajous.active || !titleBar) return;
+
+		// Respect users who'd rather not have motion: leave the static colors.
 		const reduced = window.matchMedia(
 			"(prefers-reduced-motion: reduce)",
 		).matches;
-		if (reduced || !titleBar) return;
+		if (reduced) return;
 
 		let raf = 0;
 		const tick = (now: number) => {
@@ -52,7 +62,13 @@
 		};
 		raf = requestAnimationFrame(tick);
 
-		return () => cancelAnimationFrame(raf);
+		return () => {
+			cancelAnimationFrame(raf);
+			// Drop the inline overrides so the bar falls back to the markup's
+			// plain Win98 blue instead of freezing on the last animated frame.
+			titleBar?.style.removeProperty("--title-bar-from");
+			titleBar?.style.removeProperty("--title-bar-to");
+		};
 	});
 
 	const navItems = [
@@ -109,9 +125,12 @@
 <!-- Persistent full-viewport Win98 window that wraps every page. -->
 <div class="w-screen h-screen p-1 bg-black">
 	<div class="window flex h-full w-full flex-col">
+		<!-- Default is plain Win98 blue (navy → #1084d0). The Lissajous color
+		     sweep only runs while the homepage easter egg is unlocked; see the
+		     rAF loop gated on `lissajous.active`. -->
 		<div
 			bind:this={titleBar}
-			class="title-bar [--title-bar-from:#ff4400] [--title-bar-to:#4422ff]"
+			class="title-bar [--title-bar-from:navy] [--title-bar-to:#1084d0]"
 		>
 			<div
 				class="title-bar-text flex flex-col md:flex-row justify-between m-auto w-full pl-2"
