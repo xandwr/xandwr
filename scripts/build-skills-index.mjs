@@ -23,9 +23,14 @@ const indexPath = join(skillsDir, 'index.json');
 
 const SCHEMA = 'https://schemas.agentskills.io/discovery/0.2.0/schema.json';
 
+/**
+ * @param {string} text
+ * @returns {Record<string, string>}
+ */
 function parseFrontmatter(text) {
 	const m = text.match(/^---\n([\s\S]*?)\n---/);
 	if (!m) return {};
+	/** @type {Record<string, string>} */
 	const data = {};
 	for (const line of m[1].split('\n')) {
 		const i = line.indexOf(':');

@@ -12,7 +12,9 @@ function skillsIndexPlugin() {
 		name: 'skills-index',
 		buildStart() {
 			const n = buildSkillsIndex();
-			this.info?.(`regenerated .well-known/skills/index.json (${n} skill${n === 1 ? '' : 's'})`);
+			console.info(
+				`[skills-index] regenerated .well-known/skills/index.json (${n} skill${n === 1 ? '' : 's'})`
+			);
 		}
 	};
 }

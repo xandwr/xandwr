@@ -23,6 +23,7 @@
 
 	const navItems = [
 		{ label: "projects", href: "/projects" },
+		{ label: "skills", href: "/skills" },
 		{ label: "blog", href: "/blog" },
 		{ label: "resume", href: "/resume" },
 		{ label: "wall", href: "/wall" },
