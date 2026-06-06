@@ -129,7 +129,12 @@ export async function runAssertion(
 	const method = a.request.method ?? "GET";
 	let ctx: Ctx;
 	try {
-		const res = await fetchImpl(url, { method, headers: a.request.headers, body: a.request.body });
+		// `redirect: "follow"` (the default, stated explicitly to mirror verify.mjs):
+		// both verifiers must reach the same verdict, and `redirect: "manual"` can't
+		// do that across runtimes: in a browser it yields an opaque-redirect response
+		// (status 0, no headers/body), in Node it exposes the real 30x. Following
+		// redirects gives both the same final response, same checks, same verdict.
+		const res = await fetchImpl(url, { method, headers: a.request.headers, body: a.request.body, redirect: "follow" });
 		const text = await res.text();
 		let json: unknown = null, jsonError: string | null = null;
 		try { json = JSON.parse(text); } catch (e) { jsonError = (e as Error).message; }

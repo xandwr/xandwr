@@ -93,7 +93,11 @@ async function runAssertion(subject, a) {
 	const method = a.request.method ?? "GET";
 	let ctx;
 	try {
-		const res = await fetch(url, { method, headers: a.request.headers, body: a.request.body, redirect: "manual" });
+		// `redirect: "follow"` to match the in-browser verifier ($lib/probe.ts):
+		// both must reach the same final response, so both compute the same verdict.
+		// (`manual` can't agree across runtimes: browsers turn it into an opaque
+		// status-0 response, Node exposes the real 30x.)
+		const res = await fetch(url, { method, headers: a.request.headers, body: a.request.body, redirect: "follow" });
 		const text = await res.text();
 		let json = null, jsonError = null;
 		try { json = JSON.parse(text); } catch (e) { jsonError = e.message; }
