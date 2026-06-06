@@ -8,11 +8,11 @@ worth working on these days anyways.
 so **this is my collection** of weird digital stuff.
 
 you know. speaking of that stuff.
-i actually call it residue.
-because that's what all of this really is if you think about it.
-anybody with a website is speaking into the void not actively at something,
-but towards something. with this faith that their words, eventually, collide
-with something solid enough to listen to them. you know?
+
+anybody with a website , making this stuff, is speaking into the void
+not actively at something, but towards something. with this faith
+that their words, eventually, collide with something solid
+enough to listen to them. you know?
 
 so i say: make it scrapeable. make it long enough to be worthy of Reader mode.
 the machine doesn't care, it just *eats*. it all sounds like slop nowadays so
