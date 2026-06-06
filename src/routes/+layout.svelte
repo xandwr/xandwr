@@ -47,7 +47,9 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+	<link rel="apple-touch-icon" href="/favicon.svg" />
 
 	<!-- Each route owns its <title>, description, and og/twitter title+
 	     description via <Seo>. The tags below are the site-wide constants
