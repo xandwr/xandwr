@@ -248,6 +248,15 @@ export function projectSlugs(): string[] {
 	return sources.map((s) => s.slug);
 }
 
+/**
+ * The set of curated repos as lowercased "owner/name" slugs. Lets the projects
+ * page drop these from the raw GitHub corpus so the Showcase and GitHub
+ * sections don't double-list the same repo.
+ */
+export function curatedRepoSlugs(): Set<string> {
+	return new Set(sources.map((s) => s.frontmatter.repo.toLowerCase()));
+}
+
 /** The curated projects flagged `featured`, for the landing/hero selection. */
 export async function getFeaturedProjects(
 	fetchFn: typeof fetch,
