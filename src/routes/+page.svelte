@@ -34,7 +34,7 @@
             {:else}
                 <ul class="tree-view">
                     {#each data.posts as post (post.slug)}
-                        <li>
+                        <li class="recent-post">
                             <a href={`/blog/${post.slug}`}>{post.title}</a>
                             <p class="m-0 mt-1 opacity-50">
                                 {post.published} · {post.description}
@@ -48,6 +48,19 @@
 </div>
 
 <style>
+    /* Recent Activity: highlight a post row on hover. The negative margin +
+       matching padding lets the tint bleed to the window-body edges without
+       shifting the text. */
+    .recent-post {
+        margin: 0 -8px;
+        padding: 2px 4px;
+        margin: 2px 2px;
+    }
+
+    .recent-post:hover {
+        background: #cce4ff;
+    }
+
     .blog-post {
         max-width: 84ch;
     }
