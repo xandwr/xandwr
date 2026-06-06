@@ -13,6 +13,10 @@
     // page. The /api/now-playing edge cache (~20s) keeps this cheap.
     let track = $state<NowPlaying | null>(null);
 
+    // The README's "schizo ramblings" easter egg lives below a `...` marker in
+    // the source. Hidden until the visitor clicks the ellipsis to UNLOCK it.
+    let unlocked = $state(false);
+
     onMount(() => {
         let alive = true;
 
@@ -55,7 +59,31 @@
             </div>
             <div class="window-body">
                 <div class="blog-post">
-                    {@html data.readmeHtml}
+                    {@html data.introHtml}
+
+                    {#if data.restHtml}
+                        <!-- Always rendered into the SSR DOM (never {#if}-gated)
+                             so browser Reader modes and scrapers see the full
+                             README prose. The easter egg is purely visual:
+                             collapsed by default via CSS (max-height/clip), not
+                             removed from the document. -->
+                        <div class="rest" class:rest-open={unlocked} aria-hidden={!unlocked}>
+                            {@html data.restHtml}
+                        </div>
+
+                        <button
+                            type="button"
+                            class="ellipsis-unlock"
+                            onclick={() => (unlocked = !unlocked)}
+                            aria-expanded={unlocked}
+                            aria-label={unlocked
+                                ? "Collapse the rest of the README"
+                                : "Reveal the rest of the README"}
+                            title="...?"
+                        >
+                            ...
+                        </button>
+                    {/if}
                 </div>
             </div>
         </article>
@@ -172,6 +200,48 @@
 
     .blog-post {
         max-width: 100%;
+    }
+
+    /* The `...` unlock: a big, inviting ellipsis the visitor clicks to reveal
+       the hidden ramblings. Styled as bare text (not a chrome button) so it
+       reads as part of the prose, with a subtle pulse hinting it's clickable. */
+    .ellipsis-unlock {
+        display: block;
+    }
+
+    .ellipsis-unlock:hover,
+    .ellipsis-unlock:focus-visible {
+        opacity: 1;
+        animation: none;
+    }
+
+    /* The "rest" ships in the SSR DOM at all times (for Reader mode / scrapers)
+       but is visually collapsed by default. We use max-height + clip rather than
+       `display: none` deliberately: Firefox Readability and Safari Reader skip
+       display:none/visibility:hidden subtrees when extracting article text, but
+       a clipped/zero-height node stays part of the readable document. The text
+       is therefore present for reader views even while collapsed on screen. */
+    .rest {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition:
+            max-height 0.4s ease-out,
+            opacity 0.4s ease-out;
+    }
+
+    .rest.rest-open {
+        /* Generous upper bound: larger than the content will ever be, so it
+           animates open smoothly without measuring height in JS. */
+        max-height: 4000px;
+        opacity: 1;
+    }
+
+    /* Honor reduced-motion: snap open/closed instead of animating. */
+    @media (prefers-reduced-motion: reduce) {
+        .rest {
+            transition: none;
+        }
     }
 
     .blog-post :global(h1) {
