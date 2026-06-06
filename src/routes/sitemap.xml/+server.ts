@@ -3,6 +3,7 @@
 
 import { getBlogPosts } from "$lib/content/blog";
 import { projectSlugs } from "$lib/content/projects";
+import { getSkills } from "$lib/content/skills";
 import { abs } from "$lib/site";
 import type { RequestHandler } from "./$types";
 
@@ -11,10 +12,12 @@ const xmlEscape = (s: string) =>
 
 export const GET: RequestHandler = () => {
 	const posts = getBlogPosts();
+	const skills = getSkills();
 
 	const urls: { loc: string; lastmod?: string }[] = [
 		{ loc: abs("/") },
 		{ loc: abs("/projects") },
+		{ loc: abs("/skills") },
 		{ loc: abs("/blog") },
 		{ loc: abs("/resume") },
 		{ loc: abs("/wall") },
@@ -24,8 +27,14 @@ export const GET: RequestHandler = () => {
 		{ loc: abs("/resume.json") },
 		{ loc: abs("/projects.json") },
 		{ loc: abs("/blog.json") },
+		{ loc: abs("/.well-known/skills/index.json") },
 		// Curated project detail pages.
 		...projectSlugs().map((slug) => ({ loc: abs(`/projects/${slug}`) })),
+		// Skill detail pages and their raw SKILL.md sources.
+		...skills.flatMap((s) => [
+			{ loc: abs(`/skills/${s.slug}`) },
+			{ loc: abs(`/.well-known/skills/${s.slug}/SKILL.md`) },
+		]),
 		...posts.flatMap((p) => [
 			{ loc: abs(`/blog/${p.slug}`), lastmod: p.lastEdited },
 			{ loc: abs(`/blog/${p.slug}.md`), lastmod: p.lastEdited },
