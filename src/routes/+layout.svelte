@@ -16,8 +16,43 @@
 	// the server would bake one phrase into the HTML and hydration would pick a
 	// different one — you'd see the server's phrase flash then get overridden.
 	let title = $state("");
+
+	// Animate the two title-bar gradient stops along a Lissajous curve. Each
+	// stop's hue is driven by a sine at a different frequency, so the two
+	// endpoints sweep the color wheel independently and beat against each other
+	// — the gradient never settles into a static pose. Runs client-only via rAF.
+	let titleBar = $state<HTMLDivElement | null>(null);
+
 	onMount(() => {
 		title = phrases[Math.floor(Math.random() * phrases.length)];
+
+		// Respect users who'd rather not have motion. Bail and keep the static
+		// initial colors from the markup.
+		const reduced = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		).matches;
+		if (reduced || !titleBar) return;
+
+		let raf = 0;
+		const tick = (now: number) => {
+			// `t` in seconds; the frequencies below are an irrational-ish ratio
+			// so the pattern takes a long while to repeat.
+			const t = now / 1000;
+			const fromHue = (200 + 60 * Math.sin(t * 0.23)) % 360;
+			const toHue = (320 + 60 * Math.sin(t * 0.37 + 1.5)) % 360;
+			titleBar!.style.setProperty(
+				"--title-bar-from",
+				`hsl(${fromHue} 90% 45%)`,
+			);
+			titleBar!.style.setProperty(
+				"--title-bar-to",
+				`hsl(${toHue} 90% 55%)`,
+			);
+			raf = requestAnimationFrame(tick);
+		};
+		raf = requestAnimationFrame(tick);
+
+		return () => cancelAnimationFrame(raf);
 	});
 
 	const navItems = [
@@ -75,6 +110,7 @@
 <div class="w-screen h-screen p-1 bg-black">
 	<div class="window flex h-full w-full flex-col">
 		<div
+			bind:this={titleBar}
 			class="title-bar [--title-bar-from:#ff4400] [--title-bar-to:#4422ff]"
 		>
 			<div
