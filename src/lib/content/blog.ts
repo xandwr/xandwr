@@ -14,6 +14,7 @@ import css from "shiki/langs/css.mjs";
 
 import piFromMyBirthday from "./blog/pi-from-my-birthday.md?raw";
 import aiPsychosis from "./blog/ai-psychosis.md?raw";
+import makingYourselfLegible from "./blog/making-yourself-legible.md?raw";
 
 type BlogFrontmatter = {
 	title: string;
@@ -43,6 +44,10 @@ const postSources = [
 	{
 		slug: "ai-psychosis",
 		raw: aiPsychosis,
+	},
+	{
+		slug: "making-yourself-legible",
+		raw: makingYourselfLegible,
 	}
 ];
 
