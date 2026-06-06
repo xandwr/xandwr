@@ -2,7 +2,6 @@
     import JsonLd from "$lib/components/JsonLd.svelte";
     import Seo from "$lib/components/Seo.svelte";
     import type { NowPlaying } from "$lib/spotify";
-    import { lissajous } from "$lib/lissajous.svelte";
     import { onMount } from "svelte";
     import type { PageData } from "./$types";
 
@@ -13,21 +12,6 @@
     // any failure leaves it null and the card stays hidden, never breaking the
     // page. The /api/now-playing edge cache (~20s) keeps this cheap.
     let track = $state<NowPlaying | null>(null);
-
-    // The README's "schizo ramblings" easter egg lives below a `...` marker in
-    // the source. Hidden until the visitor clicks the ellipsis to UNLOCK it.
-    let unlocked = $state(false);
-
-    // Meta layer: unlocking the ramblings also brings the layout's title-bar
-    // Lissajous color animation to life (collapsed → plain Win98 blue). The
-    // animation lives in +layout.svelte, so we relay the state through a shared
-    // rune. Reset it on unmount so leaving the homepage stops the animation.
-    $effect(() => {
-        lissajous.active = unlocked;
-    });
-    onMount(() => () => {
-        lissajous.active = false;
-    });
 
     onMount(() => {
         let alive = true;
@@ -74,27 +58,20 @@
                     {@html data.introHtml}
 
                     {#if data.restHtml}
-                        <!-- Always rendered into the SSR DOM (never {#if}-gated)
-                             so browser Reader modes and scrapers see the full
-                             README prose. The easter egg is purely visual:
-                             collapsed by default via CSS (max-height/clip), not
-                             removed from the document. -->
-                        <div class="rest" class:rest-open={unlocked} aria-hidden={!unlocked}>
+                        <!-- The "rest" of the README ships in the SSR DOM and is
+                             read by browser Reader modes, scrapers, and screen
+                             readers, but is hidden from sighted users on the
+                             rendered page. We use the visually-hidden clip
+                             pattern (NOT display:none / visibility:hidden /
+                             aria-hidden): those are skipped by Readability's
+                             visibility check and by assistive tech, whereas a
+                             clipped 1px node stays a counted part of the
+                             readable document. No aria-hidden, so it still
+                             contributes the prose that pushes the page over
+                             Reader mode's content threshold. -->
+                        <div class="rest visually-hidden">
                             {@html data.restHtml}
                         </div>
-
-                        <button
-                            type="button"
-                            class="ellipsis-unlock"
-                            onclick={() => (unlocked = !unlocked)}
-                            aria-expanded={unlocked}
-                            aria-label={unlocked
-                                ? "Collapse the rest of the README"
-                                : "Reveal the rest of the README"}
-                            title="...?"
-                        >
-                            ...
-                        </button>
                     {/if}
                 </div>
             </div>
@@ -214,46 +191,24 @@
         max-width: 100%;
     }
 
-    /* The `...` unlock: a big, inviting ellipsis the visitor clicks to reveal
-       the hidden ramblings. Styled as bare text (not a chrome button) so it
-       reads as part of the prose, with a subtle pulse hinting it's clickable. */
-    .ellipsis-unlock {
-        display: block;
-    }
-
-    .ellipsis-unlock:hover,
-    .ellipsis-unlock:focus-visible {
-        opacity: 1;
-        animation: none;
-    }
-
-    /* The "rest" ships in the SSR DOM at all times (for Reader mode / scrapers)
-       but is visually collapsed by default. We use max-height + clip rather than
-       `display: none` deliberately: Firefox Readability and Safari Reader skip
-       display:none/visibility:hidden subtrees when extracting article text, but
-       a clipped/zero-height node stays part of the readable document. The text
-       is therefore present for reader views even while collapsed on screen. */
-    .rest {
-        max-height: 0;
+    /* The "rest" of the README is present in the document for Reader mode,
+       scrapers, and screen readers, but hidden from sighted users on the
+       rendered page. This is the standard visually-hidden clip pattern: the
+       node keeps a non-zero rendered box (1px, clipped) instead of
+       display:none / visibility:hidden, because Readability's visibility check
+       and assistive tech both skip those, but treat a clipped node as real,
+       readable content. */
+    .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        border: 0;
         overflow: hidden;
-        opacity: 0;
-        transition:
-            max-height 0.4s ease-out,
-            opacity 0.4s ease-out;
-    }
-
-    .rest.rest-open {
-        /* Generous upper bound: larger than the content will ever be, so it
-           animates open smoothly without measuring height in JS. */
-        max-height: 4000px;
-        opacity: 1;
-    }
-
-    /* Honor reduced-motion: snap open/closed instead of animating. */
-    @media (prefers-reduced-motion: reduce) {
-        .rest {
-            transition: none;
-        }
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        white-space: nowrap;
     }
 
     .blog-post :global(h1) {
