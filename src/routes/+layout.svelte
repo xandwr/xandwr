@@ -3,6 +3,7 @@
 	import { phrases } from "$lib/phrases";
 	import { site } from "$lib/site";
 	import { page } from "$app/state";
+	import { onMount } from "svelte";
 	import "../global.css";
 
 	// Canonical URL excludes the query string so tailored/filtered variants
@@ -10,7 +11,14 @@
 	const canonical = $derived(`${page.url.origin}${page.url.pathname}`);
 
 	let { children } = $props();
-	const title = phrases[Math.floor(Math.random() * phrases.length)];
+
+	// Pick the random phrase only on the client. If we randomized during SSR,
+	// the server would bake one phrase into the HTML and hydration would pick a
+	// different one — you'd see the server's phrase flash then get overridden.
+	let title = $state("");
+	onMount(() => {
+		title = phrases[Math.floor(Math.random() * phrases.length)];
+	});
 
 	const navItems = [
 		{ label: "projects", href: "/projects" },
