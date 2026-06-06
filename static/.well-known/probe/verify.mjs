@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// PROBE verifier — Provable Resource & Behavior Endpoints, v0.1
+// PROBE verifier: Provable Resource & Behavior Endpoints, v0.1
 // Spec: https://xandwr.com/.well-known/probe/SPEC.md
 //
 // The whole point of PROBE: a site's manifest is a list of *testable* claims,
 // and the checker is NOT owned by the site. This is that checker. Run it
-// against any PROBE domain and it computes a verdict from public inputs alone —
+// against any PROBE domain and it computes a verdict from public inputs alone:
 // the manifest plus the live responses. Nothing to trust, everything to check.
 //
 //   node verify.mjs https://xandwr.com
@@ -55,7 +55,7 @@ function lengthOf(v) {
 
 // Evaluate one check against a fetched response context.
 // Returns { ok: boolean } on a clean pass/fail, or throws to signal `error`
-// (e.g. unknown check, unparseable JSON) — per spec, error is never pass.
+// (e.g. unknown check, unparseable JSON): per spec, error is never pass.
 function evalCheck(check, ctx) {
 	if ("status" in check) {
 		const want = check.status;
@@ -134,7 +134,7 @@ async function verify(domain) {
 
 	// Affordances are derived, never asserted: an affordance is `available` only
 	// while every assertion it `requires` passed. A capability the site can't
-	// back up right now simply isn't offered — it withdraws itself.
+	// back up right now simply isn't offered: it withdraws itself.
 	const passed = new Set(results.filter((r) => r.verdict === "pass").map((r) => r.id));
 	const affordances = (manifest.affordances ?? []).map((a) => {
 		const missing = (a.requires ?? []).filter((id) => !passed.has(id));
@@ -164,16 +164,16 @@ try {
 	} else {
 		console.log(`\n${C.bold}PROBE ${report.probe}${C.reset}  ${report.subject}\n`);
 		for (const r of report.results) {
-			console.log(`  ${mark[r.verdict]} ${C.bold}${r.id}${C.reset} — ${r.describe}`);
+			console.log(`  ${mark[r.verdict]} ${C.bold}${r.id}${C.reset}: ${r.describe}`);
 			console.log(`    ${C.dim}${r.url}${C.reset}`);
 			for (const c of r.checks) if (!c.ok) console.log(`      ${C.dim}↳ ${c.detail}${C.reset}`);
 		}
 		if (report.affordances.length) {
-			console.log(`\n  ${C.bold}affordances${C.reset} ${C.dim}(derived — available only while their assertions pass)${C.reset}`);
+			console.log(`\n  ${C.bold}affordances${C.reset} ${C.dim}(derived: available only while their assertions pass)${C.reset}`);
 			for (const a of report.affordances) {
 				const m = a.available ? `${C.green}●${C.reset}` : `${C.dim}○${C.reset}`;
 				const lbl = a.available ? `${C.bold}${a.id}${C.reset}` : `${C.dim}${a.id} (withdrawn)${C.reset}`;
-				console.log(`  ${m} ${lbl} — ${a.describe}`);
+				console.log(`  ${m} ${lbl}: ${a.describe}`);
 				if (!a.available) console.log(`      ${C.dim}↳ blocked by: ${a.missing.join(", ")}${C.reset}`);
 			}
 		}

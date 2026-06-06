@@ -10,7 +10,7 @@ export const site = {
 	url: "https://xandwr.com",
 	/** Short brand shown in <title> suffixes and the title bar. */
 	name: "xandwr.com",
-	/** Canonical, parseable name — the schema.org Person `name` and the author
+	/** Canonical, parseable name: the schema.org Person `name` and the author
 	 *  shown across every machine surface (meta, JSON Resume, llms.txt, RSS). */
 	author: "Xander Pickering",
 	/** Legal/alias form, surfaced as `alternateName` to reconcile the mixed

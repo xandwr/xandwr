@@ -1,4 +1,4 @@
-// PROBE — Provable Resource & Behavior Endpoints. The verification engine,
+// PROBE: Provable Resource & Behavior Endpoints. The verification engine,
 // shared by the in-browser /probe page and conceptually mirrored by the
 // standalone CLI verifier (static/.well-known/probe/verify.mjs). Keeping the
 // logic here means the page can't drift from the published spec.
@@ -86,7 +86,7 @@ function lengthOf(v: unknown): number | undefined {
 type Ctx = { status: number; headers: Headers; text: string; json: unknown; jsonError: string | null };
 
 // Evaluate one check. Returns a clean pass/fail, or throws to signal `error`
-// (unknown check, unparseable JSON) — per spec, error is never pass.
+// (unknown check, unparseable JSON): per spec, error is never pass.
 export function evalCheck(check: Check, ctx: Ctx): CheckResult {
 	if ("status" in check) {
 		const want = check.status;

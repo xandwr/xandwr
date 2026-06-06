@@ -8,7 +8,7 @@
 
     let { data }: { data: PageData } = $props();
 
-    // Spotify "Now Playing" — polled client-side so the card updates live while
+    // Spotify "Now Playing": polled client-side so the card updates live while
     // a visitor lingers. Starts null (card hidden) until the first poll lands;
     // any failure leaves it null and the card stays hidden, never breaking the
     // page. The /api/now-playing edge cache (~20s) keeps this cheap.
@@ -39,7 +39,7 @@
                 const { nowPlaying } = (await res.json()) as { nowPlaying: NowPlaying | null };
                 if (alive) track = nowPlaying;
             } catch {
-                // Network blip — keep whatever we last showed; next tick retries.
+                // Network blip: keep whatever we last showed; next tick retries.
             }
         };
 
@@ -58,7 +58,7 @@
 <JsonLd data={data.jsonLd} />
 
 <div class="flex w-full h-full m-auto flex-col gap-2 p-2">
-    <!-- root README — the page's primary content. Wrapped in <main>/<article>
+    <!-- root README: the page's primary content. Wrapped in <main>/<article>
          with real heading semantics so browser reader modes (Firefox
          Readability, Safari Reader) recognize it as the dominant article and
          offer their reader view. The auxiliary cards below are marked <aside>

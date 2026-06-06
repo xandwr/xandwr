@@ -3,7 +3,7 @@
 	// <title>, description, and the og/twitter title+description. The layout
 	// keeps the site-wide constants (og:type, og:site_name, og:url, og:locale,
 	// twitter:card) so these never appear twice. Drop one of these on every
-	// route — a shared link then previews as the page, not the bare site.
+	// route: a shared link then previews as the page, not the bare site.
 	import { site } from "$lib/site";
 
 	let {

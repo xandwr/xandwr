@@ -45,7 +45,7 @@ export type ResumeEntry = {
 	tags: Tag[];
 	bullets: Bullet[];
 	/**
-	 * Optional citations for this entry — a repo, live demo, or writeup. Rendered
+	 * Optional citations for this entry: a repo, live demo, or writeup. Rendered
 	 * as hyperlinks on the web resume and as raw URLs under the entry in print
 	 * (and in the markdown/JSON projections). Only shown on expanded entries.
 	 */
@@ -189,7 +189,7 @@ export const resume: Resume = {
 							tags: ["content", "marketing"],
 						},
 						{
-							text: "Managed the association's accounts — scheduling posts and engaging the community to enhance brand visibility.",
+							text: "Managed the association's accounts: scheduling posts and engaging the community to enhance brand visibility.",
 							tags: ["content", "marketing", "leadership"],
 						},
 						{

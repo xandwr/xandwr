@@ -3,8 +3,8 @@
 @layer theme, base, ninety8, components, utilities;
 
 /* W95FA: a *vector* (OTF) recreation of the Win98 UI font. Unlike 98.css's
-   bundled "Pixelated MS Sans Serif" bitmap — which is only crisp at 11px and
-   integer multiples and blurs at any fractional browser zoom / HiDPI scale —
+   bundled "Pixelated MS Sans Serif" bitmap: which is only crisp at 11px and
+   integer multiples and blurs at any fractional browser zoom / HiDPI scale:
    this scales cleanly at any size or device-pixel-ratio. Used as the primary
    family site-wide so the retro look stays sharp regardless of zoom. */
 @font-face {
@@ -15,7 +15,7 @@
 	font-display: swap;
 }
 
-/* BigBlue Terminal 437 — a DOS/IBM-PC bitmap-style monospace, used only for
+/* BigBlue Terminal 437: a DOS/IBM-PC bitmap-style monospace, used only for
    the Shiki-highlighted code blocks so they read as a retro terminal. */
 @font-face {
 	font-family: "BigBlueTerm437";
@@ -75,7 +75,7 @@
 		-webkit-font-smoothing: none;
 		-moz-osx-font-smoothing: grayscale;
 
-		/* W95FA is a vector OTF, so it stays crisp at any size or zoom — no
+		/* W95FA is a vector OTF, so it stays crisp at any size or zoom: no
 		   11px-grid requirement. Falls back to 98.css's bitmap "Pixelated MS
 		   Sans Serif" then Arial. Overrides 98.css's `body{font-family:Arial}`
 		   so nothing lands on vector Arial as the primary face. */
@@ -85,7 +85,7 @@
 
 	/* Nearest-neighbor scaling for every raster surface site-wide, so
 	   scaled icons/screenshots/canvas stay crisp instead of blurring. This
-	   is the real "pixelated" lever — note it affects images, NOT text. */
+	   is the real "pixelated" lever: note it affects images, NOT text. */
 	img,
 	canvas,
 	video,
@@ -101,7 +101,7 @@
    Print: turn the /resume page into a clean paper resume.
 
    The whole app is wrapped in a persistent full-viewport Win98 `.window` (see
-   +layout.svelte) and `html,body{overflow:hidden}` — neither reachable from
+   +layout.svelte) and `html,body{overflow:hidden}`: neither reachable from
    the resume page's scoped styles. So the print reset lives here. It only
    engages on pages that render `.resume-page`; everything is sibling-hidden
    around it, and the Win98 chrome is flattened to plain paper.
@@ -142,7 +142,7 @@
 	}
 
 	/* Flatten Win98 chrome on the resume window: no silver, no bevels, no
-	   borders — just black text on white paper. */
+	   borders: just black text on white paper. */
 	.resume-page .window,
 	.resume-page .window-body {
 		background: #fff !important;
@@ -152,7 +152,7 @@
 		padding: 0 !important;
 	}
 
-	/* Never print a URL after links — keep the contact line tidy. */
+	/* Never print a URL after links: keep the contact line tidy. */
 	a[href]::after {
 		content: "" !important;
 	}

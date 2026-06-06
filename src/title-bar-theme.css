@@ -9,7 +9,7 @@
  * re-declares `.title-bar`'s background in the LATER `components` layer, so it
  * wins over 98.css without `!important`, and routes the color through CSS
  * variables. That lets you recolor the title bar with a single Tailwind
- * arbitrary-property utility on the element — no edits to 98.css, no patch.
+ * arbitrary-property utility on the element: no edits to 98.css, no patch.
  *
  * Usage (in markup):
  *     <div class="title-bar [--title-bar-from:theme(colors.purple.900)]

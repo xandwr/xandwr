@@ -100,7 +100,7 @@
 		background: #0d1117 !important;
 	}
 
-	/* BigBlue Terminal 437 for code blocks — the retro-terminal monospace.
+	/* BigBlue Terminal 437 for code blocks: the retro-terminal monospace.
 	   `code,code *` in 98.css forces monospace, so set it on the inner spans
 	   too. font-feature-settings off keeps the bitmap glyphs literal. */
 	.blog-post :global(pre.shiki code),

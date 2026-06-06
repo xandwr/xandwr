@@ -15,13 +15,13 @@
 
 	// Pick the random phrase only on the client. If we randomized during SSR,
 	// the server would bake one phrase into the HTML and hydration would pick a
-	// different one — you'd see the server's phrase flash then get overridden.
+	// different one: you'd see the server's phrase flash then get overridden.
 	let title = $state("");
 
 	// Animate the two title-bar gradient stops along a Lissajous curve. Each
 	// stop's hue is driven by a sine at a different frequency, so the two
 	// endpoints sweep the color wheel independently and beat against each other
-	// — the gradient never settles into a static pose. Runs client-only via rAF.
+	//: the gradient never settles into a static pose. Runs client-only via rAF.
 	let titleBar = $state<HTMLDivElement | null>(null);
 
 	onMount(() => {
@@ -110,7 +110,7 @@
 		rel="alternate"
 		type="application/rss+xml"
 		href="/blog/feed.xml"
-		title="{site.author} — blog"
+		title="{site.author}: blog"
 	/>
 
 	<!-- Open Graph -->

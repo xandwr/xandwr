@@ -13,8 +13,8 @@ function repoSlug(url: string): string {
 }
 
 export const load: PageServerLoad = async ({ fetch }) => {
-	// The loader never throws on a single bad repo — each project falls back to
-	// its local PROJECT.md cache — so there's no page-level error path to model.
+	// The loader never throws on a single bad repo: each project falls back to
+	// its local PROJECT.md cache: so there's no page-level error path to model.
 	const projects = await getCuratedProjects(fetch, env.GITHUB_TOKEN);
 
 	// The full public GitHub corpus, minus anything already in the Showcase, so

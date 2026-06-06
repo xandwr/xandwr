@@ -7,5 +7,5 @@ order: 4
 tags: [rust, creative-coding, framework]
 ---
 
-A creative coding framework for Rust, built to stay out of your way — minimal
+A creative coding framework for Rust, built to stay out of your way: minimal
 ceremony between an idea and pixels on screen.

@@ -24,7 +24,7 @@
 		manifest = null;
 		try {
 			// Fetch THIS origin's manifest, then check it against THIS origin's
-			// live endpoints — same-origin, so the browser can do it directly.
+			// live endpoints: same-origin, so the browser can do it directly.
 			const res = await fetch("/.well-known/probe.json", { cache: "no-store" });
 			if (!res.ok) throw new Error(`no manifest (HTTP ${res.status})`);
 			manifest = (await res.json()) as Manifest;
@@ -55,12 +55,12 @@
 <div class="p-2">
 	<article class="window">
 		<div class="title-bar [--title-bar-from:#005500] [--title-bar-to:#55cc55]">
-			<div class="title-bar-text">probe.exe — live conformance check</div>
+			<div class="title-bar-text">probe.exe: live conformance check</div>
 		</div>
 
 		<div class="window-body flex flex-col gap-3">
 			<p class="m-0">
-				This site publishes a <strong>PROBE</strong> manifest — a list of
+				This site publishes a <strong>PROBE</strong> manifest: a list of
 				<em>testable claims</em> about what it can do. Unlike every other agent
 				manifest, the claims aren't promises: they're checked against the live
 				endpoints, and <strong>the checker isn't ours</strong>. The button below
@@ -86,13 +86,13 @@
 
 			{#if results.length}
 				<fieldset>
-					<legend>assertions — checked against live endpoints</legend>
+					<legend>assertions: checked against live endpoints</legend>
 					<ul class="probe-list">
 						{#each results as r (r.id)}
 							<li class="probe-row probe-{r.verdict}">
 								<span class="probe-mark">{mark[r.verdict]}</span>
 								<div class="probe-body">
-									<div><strong>{r.id}</strong> — {r.describe}</div>
+									<div><strong>{r.id}</strong>: {r.describe}</div>
 									<a class="probe-url" href={r.url}>{r.url}</a>
 									{#each r.checks as c}
 										{#if !c.ok}
@@ -109,7 +109,7 @@
 			{#if report}
 				<fieldset>
 					<legend>
-						affordances — capabilities (available only while their assertions
+						affordances: capabilities (available only while their assertions
 						pass)
 					</legend>
 					<ul class="probe-list">
@@ -119,7 +119,7 @@
 								<div class="probe-body">
 									<div>
 										<strong>{a.id}</strong>
-										{#if !a.available}<em>(withdrawn)</em>{/if} — {a.describe}
+										{#if !a.available}<em>(withdrawn)</em>{/if}: {a.describe}
 									</div>
 									{#if a.available}
 										<code class="probe-url">
@@ -147,7 +147,7 @@
 				</div>
 
 				<p class="m-0" style="font-size:0.9em;opacity:0.7">
-					Don't take this page's word for it — that would defeat the point. Run
+					Don't take this page's word for it: that would defeat the point. Run
 					the verifier yourself:
 					<code>node verify.mjs {report.subject}</code>. Same inputs, same
 					verdict, no trust required.

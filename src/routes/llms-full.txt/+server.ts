@@ -1,4 +1,4 @@
-// /llms-full.txt — the full-content companion to /llms.txt: the complete resume,
+// /llms-full.txt: the full-content companion to /llms.txt: the complete resume,
 // the live project list, and every blog post's source, concatenated into one
 // plaintext document an agent can ingest in a single fetch.
 
@@ -12,7 +12,7 @@ import type { RequestHandler } from "./$types";
 export const GET: RequestHandler = async ({ fetch }) => {
 	const parts: string[] = [];
 
-	parts.push(`# ${site.author} — complete profile`);
+	parts.push(`# ${site.author}: complete profile`);
 	parts.push(`> Generated from ${site.url}. ${site.tagline}.`);
 
 	// Resume

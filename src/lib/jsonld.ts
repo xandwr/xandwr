@@ -40,14 +40,14 @@ export function personJsonLd() {
 	};
 }
 
-/** ProfilePage wrapping the Person — the recommended type for an "about me". */
+/** ProfilePage wrapping the Person: the recommended type for an "about me". */
 export function profilePageJsonLd() {
 	return {
 		"@context": "https://schema.org",
 		"@type": "ProfilePage",
 		"@id": `${site.url}/#profilepage`,
 		url: site.url,
-		name: `${site.author} — ${site.name}`,
+		name: `${site.author}: ${site.name}`,
 		description: site.description,
 		mainEntity: personJsonLd(),
 	};

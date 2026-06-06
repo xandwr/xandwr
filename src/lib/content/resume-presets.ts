@@ -2,13 +2,13 @@
 //
 // A preset is a set of relevant tags plus shaping rules. `tailorResume` uses it
 // to derive a compact view of the structured resume in ./resume.ts:
-//   - An entry "matches" if its own tags — or any of its bullets' tags —
+//   - An entry "matches" if its own tags: or any of its bullets' tags:
 //     overlap the preset's tags.
 //   - Matching entries keep their relevant bullets (relevance-first, so the
 //     per-entry cap never drops a relevant bullet for an off-topic one).
 //   - Non-matching entries collapse to a one-line stub (title/org/dates, no
 //     bullets) so the employment timeline stays gap-free.
-// Order is always preserved — chronology is never shuffled.
+// Order is always preserved: chronology is never shuffled.
 
 import { bulletParts, resume, type Resume, type Tag } from "./resume";
 
@@ -46,7 +46,7 @@ export const presets: Preset[] = [
 		label: "Embedded / Hardware",
 		tags: ["embedded", "hardware", "firmware", "software"],
 		about:
-			"Computer Science major at MacEwan University specializing in embedded systems and hardware-software integration — custom firmware, microcontrollers, CAN bus, and real-time signal processing — backed by a decade of hands-on building.",
+			"Computer Science major at MacEwan University specializing in embedded systems and hardware-software integration: custom firmware, microcontrollers, CAN bus, and real-time signal processing: backed by a decade of hands-on building.",
 		maxBulletsPerEntry: 3,
 	},
 	{
@@ -60,7 +60,7 @@ export const presets: Preset[] = [
 			"teamwork",
 		],
 		about:
-			"Computer Science major at MacEwan University with enterprise desktop-support experience — service desk operations, workstation provisioning, Active Directory, SCCM, and ServiceNow — paired with strong, human-first client relations.",
+			"Computer Science major at MacEwan University with enterprise desktop-support experience: service desk operations, workstation provisioning, Active Directory, SCCM, and ServiceNow: paired with strong, human-first client relations.",
 		maxBulletsPerEntry: 3,
 	},
 	{
@@ -78,7 +78,7 @@ export function getPreset(id: string | null | undefined): Preset | null {
 	return presets.find((p) => p.id === id) ?? null;
 }
 
-/** Tailored view types — a flattened, render-ready shape. */
+/** Tailored view types: a flattened, render-ready shape. */
 export type EntryView = {
 	title: string;
 	org: string;

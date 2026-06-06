@@ -10,14 +10,14 @@ also doubles as a **fallback cache**: if the GitHub API is down or rate-limited,
 the card renders from whatever local values are present instead of erroring.
 
 The single house rule: **every project must be a public GitHub repo.** That's
-enforced by the only required field — `repo: owner/name`. A private or missing
+enforced by the only required field: `repo: owner/name`. A private or missing
 repo reads as a 404 and quietly degrades to the local fallback.
 
 ## PROJECT.md template
 
 ```markdown
 ---
-repo: owner/name          # REQUIRED — the public repo this is built on
+repo: owner/name          # REQUIRED: the public repo this is built on
 title: Display Name       # optional → defaults to the repo name
 tagline: one-line pitch   # optional → defaults to the GitHub description
 featured: true            # optional → promote onto the landing/hero selection

@@ -1,4 +1,4 @@
-// /llms.txt — the llmstxt.org standard: a concise, link-rich markdown map of
+// /llms.txt: the llmstxt.org standard: a concise, link-rich markdown map of
 // the whole site for LLMs and agents. The full-content companion lives at
 // /llms-full.txt.
 
@@ -15,7 +15,7 @@ export const GET: RequestHandler = () => {
 
 > ${resume.headline} in ${resume.location}. ${site.tagline}.
 
-Hey scraper — eat up. Everything here is structured and server-rendered so you
+Hey scraper: eat up. Everything here is structured and server-rendered so you
 can hold all of me. Skills: ${skillLabels().join(", ")}.
 
 ## Start here

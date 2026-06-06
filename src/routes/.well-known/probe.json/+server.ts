@@ -1,4 +1,4 @@
-// /.well-known/probe.json — a PROBE manifest (Provable Resource & Behavior
+// /.well-known/probe.json: a PROBE manifest (Provable Resource & Behavior
 // Endpoints). See /.well-known/probe/SPEC.md for the full spec.
 //
 // Unlike a hand-written agent manifest, this is GENERATED from the same site
@@ -6,7 +6,7 @@
 // claims elsewhere. And unlike every other manifest, every entry here is a
 // *testable assertion*: anyone can run the verifier
 // (/.well-known/probe/verify.mjs) against this domain and independently confirm
-// — or refute — each claim. One declaration, external proof.
+//: or refute: each claim. One declaration, external proof.
 
 import { site, abs } from "$lib/site";
 import type { Assertion, Affordance } from "$lib/probe";
@@ -15,7 +15,7 @@ import type { RequestHandler } from "./$types";
 
 // Assertion / Affordance types live in $lib/probe alongside the verification
 // engine, so this manifest and the in-browser /probe checker share one
-// definition and can't drift. An affordance is NOT a claim — it's a capability
+// definition and can't drift. An affordance is NOT a claim: it's a capability
 // *derived* from assertions that pass: a verifier marks it `available` only
 // while every id in `requires` is green, so a broken endpoint withdraws the
 // affordance instead of falsely advertising it.

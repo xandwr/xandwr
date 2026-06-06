@@ -68,7 +68,7 @@ function toRepo(r: GithubRepo, languages: string[] = []): Repo {
 /**
  * Fetches the language breakdown for a repo and returns the top 3 by bytes,
  * most-used first. The `/languages` endpoint returns a `{ name: bytes }` map.
- * Failures (rate limit, network) degrade to an empty list — the card still
+ * Failures (rate limit, network) degrade to an empty list: the card still
  * renders its primary `language`, so this is best-effort enrichment only.
  */
 async function fetchLanguages(
@@ -94,7 +94,7 @@ async function fetchLanguages(
 }
 
 /**
- * Fetches a single repo by `owner/name` slug — the lookup behind the curated
+ * Fetches a single repo by `owner/name` slug: the lookup behind the curated
  * projects page. Returns `null` when the repo is missing or private (404), so
  * callers can fall back to locally-cached frontmatter; throws on other
  * non-OK responses (e.g. a 403 rate-limit) so they can be surfaced/cached.
@@ -114,7 +114,7 @@ export async function fetchRepo(
 		{ headers: ghHeaders(token) }
 	);
 
-	// A private or non-existent repo reads as 404 — the signal that a curated
+	// A private or non-existent repo reads as 404: the signal that a curated
 	// PROJECT.md points at something that isn't a public repo.
 	if (res.status === 404) return null;
 
@@ -153,6 +153,6 @@ export async function fetchRepos(
 		.filter((r) => (excludeForks ? !r.fork && !r.archived : true))
 		.sort((a, b) => b.pushed_at.localeCompare(a.pushed_at))
 		// The list view shows only the primary `language`, so we skip the extra
-		// per-repo `/languages` call here — `languages` defaults to empty.
+		// per-repo `/languages` call here: `languages` defaults to empty.
 		.map((r) => toRepo(r));
 }

@@ -10,7 +10,7 @@ import type { RequestHandler } from "./$types";
  * regardless of visitor count.
  *
  * Returns `{ nowPlaying: null }` whenever credentials are missing or any
- * Spotify call fails — the widget treats that as "hide myself".
+ * Spotify call fails: the widget treats that as "hide myself".
  */
 export const GET: RequestHandler = async ({ fetch }) => {
 	const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN } = env;

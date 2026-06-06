@@ -37,7 +37,7 @@
 
 <Seo
     title="projects"
-    description="Things I've built — a curated set of {site.author}'s projects and writeups, plus every public repo on GitHub."
+    description="Things I've built: a curated set of {site.author}'s projects and writeups, plus every public repo on GitHub."
 />
 
 <svelte:head>

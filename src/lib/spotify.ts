@@ -4,7 +4,7 @@
  * Intended to be called from a server endpoint: it reads the app credentials
  * plus a long-lived refresh token (minted once via scripts/spotify-auth.mjs),
  * exchanges the refresh token for a short-lived access token, then reads the
- * now-playing endpoint — falling back to recently-played when nothing is on.
+ * now-playing endpoint: falling back to recently-played when nothing is on.
  *
  * Every failure path degrades to `null` rather than throwing, so a Spotify
  * outage or a revoked token quietly hides the widget instead of breaking the
@@ -64,7 +64,7 @@ function toNowPlaying(track: SpotifyTrack, isPlaying: boolean): NowPlaying {
  * only used for the single request that follows, so there's nothing to cache.
  */
 async function getAccessToken(fetchFn: typeof fetch, creds: SpotifyCreds): Promise<string> {
-	// btoa is a Web API available in Workers — no Node Buffer needed.
+	// btoa is a Web API available in Workers: no Node Buffer needed.
 	const basic = btoa(`${creds.clientId}:${creds.clientSecret}`);
 	const res = await fetchFn("https://accounts.spotify.com/api/token", {
 		method: "POST",
@@ -90,7 +90,7 @@ async function fetchCurrent(fetchFn: typeof fetch, accessToken: string): Promise
 		headers: { Authorization: `Bearer ${accessToken}` },
 	});
 	// 204 No Content = nothing currently playing; 200 with is_playing:false can
-	// also mean paused — treat both as "not live" and let the caller fall back.
+	// also mean paused: treat both as "not live" and let the caller fall back.
 	if (res.status === 204 || !res.ok) return null;
 	const body = (await res.json()) as { is_playing: boolean; item: SpotifyTrack | null };
 	if (!body.item || !body.is_playing) return null;

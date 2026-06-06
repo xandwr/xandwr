@@ -14,7 +14,7 @@ import { resume, type Resume, type Tag } from "./resume";
 import { tailorResume, type ResumeView } from "./resume-presets";
 import { site } from "../site";
 
-/** Human-readable label for each tag — used as schema.org `knowsAbout` /
+/** Human-readable label for each tag: used as schema.org `knowsAbout` /
  *  JSON Resume `skills`, so the closed vocabulary becomes a real skill list. */
 export const TAG_LABELS: Record<Tag, string> = {
 	general: "General",
@@ -157,7 +157,7 @@ export function resumeToMarkdown(doc: ResumeView): string {
 		lines.push("", `## ${section.heading}`);
 		for (const entry of section.entries) {
 			const org = entry.location ? `${entry.org} · ${entry.location}` : entry.org;
-			lines.push("", `### ${entry.title} — ${org}`, `*${entry.dates}*`);
+			lines.push("", `### ${entry.title}: ${org}`, `*${entry.dates}*`);
 			for (const bullet of entry.bullets) lines.push(`- ${bullet}`);
 			if (entry.links.length > 0) {
 				lines.push(

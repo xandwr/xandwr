@@ -3,7 +3,7 @@
     import { languageColor, languageIcon } from "$lib/languages";
 
     interface Props {
-        /** Folder slug — links the card title to the /projects/[slug] page. */
+        /** Folder slug: links the card title to the /projects/[slug] page. */
         slug?: string;
         name?: string;
         description?: string;

@@ -3,7 +3,7 @@
 // The now-playing endpoint needs a *user* token, which requires an interactive
 // OAuth consent. This script does that dance once: it spins up a throwaway
 // localhost server, opens the Spotify consent page, catches the redirect, and
-// trades the authorization code for a refresh token — which it prints for you
+// trades the authorization code for a refresh token: which it prints for you
 // to stash as a Cloudflare secret. After that the Worker mints short-lived
 // access tokens from the refresh token with no further logins.
 //

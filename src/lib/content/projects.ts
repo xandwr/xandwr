@@ -9,7 +9,7 @@
 // still renders from whatever local values are present instead of erroring.
 //
 // The only REQUIRED field is `repo: owner/name`. That requirement is also what
-// enforces the house rule — every curated project must be a public GitHub repo
+// enforces the house rule: every curated project must be a public GitHub repo
 // (a private/missing repo reads as a 404 and degrades to the local fallback).
 //
 // See ./projects/README.md for the authoring convention and a template.
@@ -22,7 +22,7 @@ import { renderMarkdown } from "./blog";
  * unset fields fall back to live GitHub data, then to sensible defaults.
  */
 export type ProjectFrontmatter = {
-	/** REQUIRED. "owner/name" — the public repo this project is built on. */
+	/** REQUIRED. "owner/name": the public repo this project is built on. */
 	repo: string;
 	/** Display name. Defaults to the repo name. */
 	title?: string;
@@ -182,7 +182,7 @@ async function merge(src: ProjectSource, repo: Repo | null): Promise<CuratedProj
 
 /**
  * Looks up a project's repo and merges it, falling back to local frontmatter on
- * any lookup failure. Never throws — a bad repo just renders from its cache.
+ * any lookup failure. Never throws: a bad repo just renders from its cache.
  */
 async function hydrate(
 	src: ProjectSource,
@@ -219,7 +219,7 @@ function sort(a: CuratedProject, b: CuratedProject, fm: Map<string, ProjectFront
  * Resolves every curated project, hydrating each from GitHub and falling back
  * to local frontmatter per-project on any lookup failure. Pass the SvelteKit
  * `fetch` (for SSR dedup/caching) and an optional token (5000 vs 60 req/hr).
- * Never throws on a single bad repo — that project just renders from its cache.
+ * Never throws on a single bad repo: that project just renders from its cache.
  */
 export async function getCuratedProjects(
 	fetchFn: typeof fetch,
@@ -243,7 +243,7 @@ export async function getCuratedProject(
 	return src ? hydrate(src, fetchFn, token) : undefined;
 }
 
-/** Every known project slug — handy for prerender entries / sitemaps. */
+/** Every known project slug: handy for prerender entries / sitemaps. */
 export function projectSlugs(): string[] {
 	return sources.map((s) => s.slug);
 }
