@@ -1,6 +1,6 @@
 ---
-title: ai psychosis and the everyman
-description: my short take on the new phenomenon
+title: ai psychosis
+description: my short take
 published: 2026-06-05
 last-edited: 2026-06-05
 ---
