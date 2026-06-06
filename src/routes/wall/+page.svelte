@@ -38,8 +38,8 @@
                 <!-- TODO: post / edit form for the signed-in user -->
                 <p class="m-0 opacity-50">Post box goes here.</p>
             {:else}
-                <p class="m-0 mb-3">
-                    Trust is a two-way street, and I need your identity before I know who to credit for this post!
+                <p class="m-0 mb-3 text-black/33">
+                    currently disabled and pending implementation
                 </p>
 
                 <!-- Inert until the Google OIDC route exists. -->
@@ -59,11 +59,11 @@
         </div>
         <div class="window-body flex-1 overflow-auto">
             <p class="m-0 mb-3">
-                No moderation. Whatever is here is from a real person who had something to say about me!
+                no moderation. what you see is real
             </p>
 
             {#if entries.length === 0}
-                <p class="m-0 opacity-50">Nobody's signed the wall yet.</p>
+                <p class="m-0 opacity-50">there's nothing here</p>
             {:else}
                 <ul class="tree-view">
                     {#each entries as entry (entry.name + entry.createdAt)}

@@ -38,15 +38,15 @@
 			// `t` in seconds; the frequencies below are an irrational-ish ratio
 			// so the pattern takes a long while to repeat.
 			const t = now / 1000;
-			const fromHue = (200 + 60 * Math.sin(t * 0.23)) % 360;
-			const toHue = (320 + 60 * Math.sin(t * 0.37 + 1.5)) % 360;
+			const fromHue = (200 + 60 * Math.sin(t * 0.13)) % 360;
+			const toHue = (320 + 60 * Math.sin(t * 0.23 + 1.5)) % 360;
 			titleBar!.style.setProperty(
 				"--title-bar-from",
-				`hsl(${fromHue} 90% 45%)`,
+				`hsl(${fromHue} 50% 45%)`,
 			);
 			titleBar!.style.setProperty(
 				"--title-bar-to",
-				`hsl(${toHue} 90% 55%)`,
+				`hsl(${toHue} 50% 55%)`,
 			);
 			raf = requestAnimationFrame(tick);
 		};
