@@ -9,29 +9,16 @@
 // — or refute — each claim. One declaration, external proof.
 
 import { site, abs } from "$lib/site";
+import type { Assertion, Affordance } from "$lib/probe";
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 
-type Check = Record<string, unknown>;
-type Assertion = {
-	id: string;
-	describe: string;
-	request: { method?: string; path: string; headers?: Record<string, string>; body?: string };
-	expect: Check[];
-};
-
-// An affordance is NOT a claim — it's a capability *derived* from assertions
-// that pass. `requires` names assertion ids; a verifier marks the affordance
-// `available` only while every required assertion is green. A broken endpoint
-// doesn't just fail a test, it withdraws the affordance. No other manifest can
-// say "here's what I can do" and have that retract itself when it breaks.
-type Affordance = {
-	id: string;
-	describe: string;
-	requires: string[];
-	via: { method?: string; path: string; params?: Record<string, string> };
-	returns?: string;
-};
+// Assertion / Affordance types live in $lib/probe alongside the verification
+// engine, so this manifest and the in-browser /probe checker share one
+// definition and can't drift. An affordance is NOT a claim — it's a capability
+// *derived* from assertions that pass: a verifier marks it `available` only
+// while every id in `requires` is green, so a broken endpoint withdraws the
+// affordance instead of falsely advertising it.
 
 const assertions: Assertion[] = [
 	{

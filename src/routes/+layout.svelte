@@ -76,6 +76,7 @@
 		{ label: "blog", href: "/blog" },
 		{ label: "resume", href: "/resume" },
 		{ label: "wall", href: "/wall" },
+		{ label: "probe", href: "/probe" },
 	];
 
 	let expanded = $state(false);
