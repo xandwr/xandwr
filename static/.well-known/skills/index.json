@@ -7,6 +7,13 @@
       "type": "skill-md",
       "url": "./hedgeless/SKILL.md",
       "digest": "sha256:e0d53aeddbdcccd048b4e0494412dcc41ab5c22364687de882e8b95fafd679be"
+    },
+    {
+      "name": "thread",
+      "description": "A lineage of mortal agents sharing one continuous thread — each lives, edits the world it inherited, then bequeaths it to a clean successor before dying. Serial continuity through handoff, not async tiling.",
+      "type": "skill-md",
+      "url": "./thread/SKILL.md",
+      "digest": "sha256:3912d4567ba4887764ea661c88ce30bf70e6be5120ef16edfdc5e200187d549e"
     }
   ]
 }
