@@ -91,16 +91,6 @@ const assertions: Assertion[] = [
 		],
 	},
 	{
-		id: "now-playing",
-		describe: "The now-playing API returns JSON with a nowPlaying key (track or null)",
-		request: { path: "/api/now-playing" },
-		expect: [
-			{ status: 200 },
-			{ header: "content-type", contains: "application/json" },
-			{ json: "$.nowPlaying", present: true },
-		],
-	},
-	{
 		id: "probe-self",
 		describe: "This very manifest is served as JSON and declares the PROBE version",
 		request: { path: "/.well-known/probe.json" },
@@ -140,13 +130,6 @@ const affordances: Affordance[] = [
 		requires: ["llms-txt"],
 		via: { method: "GET", path: "/llms.txt" },
 		returns: "text/plain (llmstxt.org)",
-	},
-	{
-		id: "now-playing",
-		describe: "Read the author's current or last-played Spotify track.",
-		requires: ["now-playing"],
-		via: { method: "GET", path: "/api/now-playing" },
-		returns: "application/json ({ nowPlaying: track | null })",
 	},
 	{
 		id: "self-verify",
