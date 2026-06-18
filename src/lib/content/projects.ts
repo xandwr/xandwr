@@ -28,9 +28,9 @@ export type ProjectFrontmatter = {
 	title?: string;
 	/** One-line pitch shown on the card. Defaults to the GitHub description. */
 	tagline?: string;
-	/** Promote onto the landing/hero selection. */
+	/** Promote onto the landing/hero selection, and pin to the top of the list. */
 	featured?: boolean;
-	/** Explicit curation order (ascending). Unset sorts after ordered items. */
+	/** @deprecated No longer used: the list sorts by stargazer count, not `order`. */
 	order?: number;
 	/** Optional live/demo link (video, deployed app) distinct from the repo. */
 	demo?: string;
@@ -201,12 +201,9 @@ async function hydrate(
 	return merge(src, repo);
 }
 
-/** Featured first, then explicit `order` ascending, then by stars, then name. */
-function sort(a: CuratedProject, b: CuratedProject, fm: Map<string, ProjectFrontmatter>): number {
+/** Featured first, then by stargazer count descending, then name. */
+function sort(a: CuratedProject, b: CuratedProject): number {
 	if (a.featured !== b.featured) return a.featured ? -1 : 1;
-	const oa = fm.get(a.slug)?.order ?? Infinity;
-	const ob = fm.get(b.slug)?.order ?? Infinity;
-	if (oa !== ob) return oa - ob;
 	if (a.stars !== b.stars) return b.stars - a.stars;
 	return a.name.localeCompare(b.name);
 }
@@ -221,9 +218,8 @@ export async function getCuratedProjects(
 	fetchFn: typeof fetch,
 	token?: string
 ): Promise<CuratedProject[]> {
-	const fmBySlug = new Map(sources.map((s) => [s.slug, s.frontmatter]));
 	const projects = await Promise.all(sources.map((src) => hydrate(src, fetchFn, token)));
-	return projects.sort((a, b) => sort(a, b, fmBySlug));
+	return projects.sort(sort);
 }
 
 /**
