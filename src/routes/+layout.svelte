@@ -24,7 +24,7 @@
 	const navItems = [
 		{ label: "projects", href: "/projects" },
 		{ label: "resume", href: "/resume" },
-		{ label: "reviews", href: "/wall" },
+		// { label: "reviews", href: "/wall" }, // hidden for now
 	];
 
 	let expanded = $state(false);
