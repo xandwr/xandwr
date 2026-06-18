@@ -3,7 +3,7 @@ repo: xandwr/termwaves
 title: termwaves
 tagline: animated waveforms that ripple across your terminal
 featured: true
-order: 5
+order: 3
 tags: [rust, terminal, graphics]
 ---
 
