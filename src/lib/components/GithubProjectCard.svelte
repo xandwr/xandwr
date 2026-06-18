@@ -150,7 +150,7 @@
                     rel="noopener noreferrer"
                     class="text-sm hover:text-base"
                 >
-                    Open <span aria-hidden="true">↗</span>
+                    Go to GitHub<span aria-hidden="true">↗</span>
                     <span class="sr-only"
                         >{name} on GitHub (opens in a new tab)</span
                     >
