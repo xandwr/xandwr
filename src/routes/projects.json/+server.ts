@@ -8,6 +8,10 @@ import { abs } from "$lib/site";
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 
+// Baked at build time off the same loader as the page, so the machine mirror
+// ships as a static asset and can never drift from the prerendered /projects.
+export const prerender = true;
+
 export const GET: RequestHandler = async ({ fetch }) => {
 	const projects = await getCuratedProjects(fetch, env.GITHUB_TOKEN);
 

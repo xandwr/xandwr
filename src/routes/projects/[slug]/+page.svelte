@@ -117,11 +117,6 @@
 </div>
 
 <style>
-    /* Mirrors the blog post body styling so writeups render consistently. */
-    .blog-post {
-        max-width: 84ch;
-    }
-
     .blog-post :global(h2),
     .blog-post :global(h3) {
         margin: 22px 0 8px;

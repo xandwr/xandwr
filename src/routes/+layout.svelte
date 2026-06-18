@@ -23,11 +23,8 @@
 
 	const navItems = [
 		{ label: "projects", href: "/projects" },
-		{ label: "skills", href: "/skills" },
-		{ label: "blog", href: "/blog" },
 		{ label: "resume", href: "/resume" },
-		{ label: "wall", href: "/wall" },
-		{ label: "probe", href: "/probe" },
+		{ label: "reviews", href: "/wall" },
 	];
 
 	let expanded = $state(false);
@@ -102,14 +99,6 @@
 								/>
 								xandwr.com
 							</a>
-							<hr class="h-full border border-black/20" />
-							<p class="font-light opacity-50">
-								<span class="md:hidden">{currentLabel}</span>
-								<span
-									class="hidden text-lg md:inline text-black font-bold"
-									>{title}</span
-								>
-							</p>
 						</div>
 					</div>
 
