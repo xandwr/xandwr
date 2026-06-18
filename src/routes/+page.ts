@@ -9,7 +9,11 @@ import readme from "../../README.md?raw";
 // whole README just renders as the intro.
 const ELLIPSIS_MARKER = /^\.\.\.$/m;
 
-export async function load() {
+// When a universal load coexists with +page.server.ts, this load owns the
+// merge: the server load's output arrives as `data`, and whatever we return
+// here is the final PageData. So spread `data` to keep the live `activity`
+// strip from the server load.
+export async function load({ data }) {
 	const markerMatch = readme.match(ELLIPSIS_MARKER);
 	const splitIndex = markerMatch?.index ?? readme.length;
 	const intro = readme.slice(0, splitIndex).trimEnd();
@@ -18,6 +22,7 @@ export async function load() {
 		: "";
 
 	return {
+		...data,
 		introHtml: await renderMarkdown(intro),
 		restHtml: rest ? await renderMarkdown(rest) : "",
 		jsonLd: profilePageJsonLd(),

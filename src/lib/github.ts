@@ -116,3 +116,65 @@ export async function fetchRepo(
 	const languages = await fetchLanguages(owner, name, fetchFn, token);
 	return toRepo((await res.json()) as GithubRepo, languages);
 }
+
+/** A single recently-pushed repo, for the landing "currently pushing" strip. */
+export interface ActiveRepo {
+	name: string;
+	url: string;
+	/** ISO timestamp of the last push, for computing "last shipped Nd ago". */
+	pushedAt: string;
+}
+
+/** The landing strip's payload: the freshest repos, newest push first. */
+export interface RecentActivity {
+	repos: ActiveRepo[];
+	/** ISO timestamp of the single most recent push across all repos. */
+	lastPushedAt: string;
+}
+
+/** Subset of the GitHub `/users/:user/repos` response we read. */
+interface GithubUserRepo {
+	name: string;
+	html_url: string;
+	pushed_at: string;
+	fork: boolean;
+	private: boolean;
+}
+
+/**
+ * Fetches a user's most recently *pushed* public, non-fork repos: the live
+ * signal behind the landing "currently pushing" strip. Sorted newest-first by
+ * GitHub, we trim to `limit` and surface the freshest push timestamp.
+ *
+ * Best-effort: any failure (rate limit, network, non-OK) returns `null` so the
+ * caller can render nothing rather than break the page. Never throws.
+ */
+export async function fetchRecentActivity(
+	user: string,
+	fetchFn: typeof fetch,
+	{
+		token,
+		limit = 3,
+		exclude = [],
+	}: { token?: string; limit?: number; exclude?: string[] } = {}
+): Promise<RecentActivity | null> {
+	try {
+		const res = await fetchFn(
+			`https://api.github.com/users/${encodeURIComponent(user)}/repos?sort=pushed&direction=desc&type=owner&per_page=30`,
+			{ headers: ghHeaders(token) }
+		);
+		if (!res.ok) return null;
+
+		// Case-insensitive name denylist (e.g. this site's own repo).
+		const denied = new Set(exclude.map((n) => n.toLowerCase()));
+		const repos = ((await res.json()) as GithubUserRepo[])
+			.filter((r) => !r.fork && !r.private && !denied.has(r.name.toLowerCase()))
+			.slice(0, limit)
+			.map((r) => ({ name: r.name, url: r.html_url, pushedAt: r.pushed_at }));
+
+		if (repos.length === 0) return null;
+		return { repos, lastPushedAt: repos[0].pushedAt };
+	} catch {
+		return null;
+	}
+}
