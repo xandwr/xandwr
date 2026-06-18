@@ -31,7 +31,6 @@ export const GET: RequestHandler = async ({ fetch }) => {
 					description: p.description,
 					programmingLanguage: p.language,
 					codeRepository: p.url,
-					...(p.writeup ? { url: abs(`/blog/${p.writeup}`) } : {}),
 					...(p.demo ? { discussionUrl: p.demo } : {}),
 					// Non-standard but handy extras for scrapers.
 					tags: p.tags,

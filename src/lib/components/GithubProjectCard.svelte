@@ -17,8 +17,6 @@
         demo?: string;
         /** Hero media: a /static path or absolute URL. */
         cover?: string;
-        /** Slug of a long-form build log in /blog, if one exists. */
-        writeup?: string;
         /** Free-form tags shown as chips. */
         tags?: string[];
     }
@@ -34,7 +32,6 @@
         url = "#",
         demo,
         cover,
-        writeup,
         tags = [],
     }: Props = $props();
 
@@ -125,23 +122,16 @@
                 <span>{forks} {forks === 1 ? "fork" : "forks"}</span>
             </div>
 
-            {#if writeup || demo}
+            {#if demo}
                 <div class="flex flex-wrap gap-3 text-sm">
-                    {#if writeup}
-                        <a href="/blog/{writeup}" class="hover:text-base">
-                            Read the writeup <span aria-hidden="true">→</span>
-                        </a>
-                    {/if}
-                    {#if demo}
-                        <a
-                            href={demo}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="hover:text-base"
-                        >
-                            Demo <span aria-hidden="true">↗</span>
-                        </a>
-                    {/if}
+                    <a
+                        href={demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-base"
+                    >
+                        Demo <span aria-hidden="true">↗</span>
+                    </a>
                 </div>
             {/if}
         </div>

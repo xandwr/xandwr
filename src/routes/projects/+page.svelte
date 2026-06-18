@@ -1,7 +1,7 @@
 <script lang="ts">
     import GithubProjectCard from "$lib/components/GithubProjectCard.svelte";
     import Seo from "$lib/components/Seo.svelte";
-    import { abs, site } from "$lib/site";
+    import { site } from "$lib/site";
     import type { PageData } from "./$types";
 
     let { data }: { data: PageData } = $props();
@@ -22,9 +22,6 @@
                           description: project.description,
                           programmingLanguage: project.language,
                           codeRepository: project.url,
-                          ...(project.writeup
-                              ? { url: abs(`/blog/${project.writeup}`) }
-                              : {}),
                       },
                   })),
               }
@@ -34,7 +31,7 @@
 
 <Seo
     title="projects"
-    description="Things I've built: a curated set of {site.author}'s projects and writeups."
+    description="Things I've built: a curated set of {site.author}'s projects."
 />
 
 <svelte:head>

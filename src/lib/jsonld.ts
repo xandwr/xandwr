@@ -5,7 +5,6 @@
 
 import { resume } from "./content/resume";
 import { skillLabels } from "./content/resume-export";
-import type { BlogPostSummary, BlogPost } from "./content/blog";
 import type { CuratedProject } from "./content/projects";
 import { site, abs } from "./site";
 
@@ -53,24 +52,6 @@ export function profilePageJsonLd() {
 	};
 }
 
-/** A single blog post as a schema.org BlogPosting. */
-export function blogPostingJsonLd(post: BlogPost | BlogPostSummary) {
-	const url = abs(`/blog/${post.slug}`);
-	return {
-		"@context": "https://schema.org",
-		"@type": "BlogPosting",
-		"@id": `${url}#post`,
-		headline: post.title,
-		description: post.description,
-		datePublished: post.published,
-		dateModified: post.lastEdited,
-		url,
-		mainEntityOfPage: url,
-		author: { "@type": "Person", "@id": `${site.url}/#person`, name: site.author },
-		publisher: { "@type": "Person", name: site.author },
-	};
-}
-
 /** A single curated project as a schema.org SoftwareSourceCode. */
 export function softwareSourceCodeJsonLd(project: CuratedProject) {
 	const url = abs(`/projects/${project.slug}`);
@@ -85,22 +66,5 @@ export function softwareSourceCodeJsonLd(project: CuratedProject) {
 		url,
 		keywords: project.tags.length ? project.tags : undefined,
 		author: { "@type": "Person", "@id": `${site.url}/#person`, name: site.author },
-		// A linked build-log post, if one exists.
-		...(project.writeup
-			? { subjectOf: { "@type": "BlogPosting", url: abs(`/blog/${project.writeup}`) } }
-			: {}),
-	};
-}
-
-/** The blog index as a schema.org Blog containing its posts. */
-export function blogJsonLd(posts: BlogPostSummary[]) {
-	return {
-		"@context": "https://schema.org",
-		"@type": "Blog",
-		"@id": `${site.url}/blog#blog`,
-		name: `${site.author}'s blog`,
-		url: abs("/blog"),
-		author: { "@type": "Person", "@id": `${site.url}/#person`, name: site.author },
-		blogPost: posts.map((p) => blogPostingJsonLd(p)),
 	};
 }

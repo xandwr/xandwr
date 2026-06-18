@@ -19,7 +19,7 @@
                 <div class="title-bar-text">README.md</div>
             </div>
             <div class="window-body">
-                <div class="blog-post text-lg">
+                <div class="prose text-lg">
                     {@html data.introHtml}
                 </div>
             </div>

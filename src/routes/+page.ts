@@ -1,4 +1,4 @@
-import { getBlogPosts, renderMarkdown } from "$lib/content/blog";
+import { renderMarkdown } from "$lib/content/markdown";
 import { profilePageJsonLd } from "$lib/jsonld";
 import readme from "../../README.md?raw";
 
@@ -20,7 +20,6 @@ export async function load() {
 	return {
 		introHtml: await renderMarkdown(intro),
 		restHtml: rest ? await renderMarkdown(rest) : "",
-		posts: getBlogPosts().slice(0, 3),
 		jsonLd: profilePageJsonLd(),
 	};
 }

@@ -6,21 +6,14 @@
 import { resume } from "./content/resume";
 
 export const site = {
-	/** Production origin, no trailing slash. Used to build absolute URLs. */
 	url: "https://xandwr.com",
-	/** Short brand shown in <title> suffixes and the title bar. */
 	name: "xandwr.com",
-	/** Canonical, parseable name: the schema.org Person `name` and the author
-	 *  shown across every machine surface (meta, JSON Resume, llms.txt, RSS). */
 	author: "Xander Pickering",
-	/** Legal/alias form, surfaced as `alternateName` to reconcile the mixed
-	 *  identity scattered around the web (the resume `name` is the stylized one). */
 	legalName: "Alexander Pickering",
-	/** GitHub handle whose repos power /projects. */
 	githubUser: "xandwr",
 	tagline: "my little corners of digital real-estate",
 	description:
-		`${resume.headline} based in ${resume.location}. ${resume.about}`,
+		`${resume.headline}, dev based in ${resume.location} - see ${resume.about}`,
 	locale: "en_US",
 } as const;
 

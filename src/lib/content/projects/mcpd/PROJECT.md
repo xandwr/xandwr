@@ -7,8 +7,6 @@ order: 2
 tags: [rust, mcp, daemon]
 ---
 
-# mcpd
-
 A daemon that aggregates multiple MCP (Model Context Protocol) servers into one. Implements the [MCP spec](https://spec.modelcontextprotocol.io/) (2025-11-25).
 
 Register any MCP server once with mcpd, then point your MCP client at mcpd. Add or remove servers at any time: agents discover new tools, resources, and prompts in realtime.

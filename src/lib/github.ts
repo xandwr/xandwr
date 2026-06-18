@@ -1,5 +1,5 @@
 /**
- * Fetches public repositories for a GitHub user via the REST API.
+ * Fetches a single public repository by `owner/name` via the GitHub REST API.
  *
  * Intended to be called from a server load function: it reads an optional
  * GITHUB_TOKEN (raising the rate limit from 60 to 5000 req/hr) and passes the
@@ -18,7 +18,7 @@ export interface Repo {
 	url: string;
 }
 
-/** Subset of the GitHub `/users/:user/repos` response we read. */
+/** Subset of the GitHub `/repos/:owner/:name` response we read. */
 interface GithubRepo {
 	name: string;
 	description: string | null;
@@ -26,16 +26,6 @@ interface GithubRepo {
 	stargazers_count: number;
 	forks_count: number;
 	html_url: string;
-	fork: boolean;
-	archived: boolean;
-	pushed_at: string;
-}
-
-interface FetchOptions {
-	/** Personal access token; raises the rate limit when present. */
-	token?: string;
-	/** Drop forks and archived repos from the result. Defaults to true. */
-	excludeForks?: boolean;
 }
 
 /** Shared request headers for the GitHub REST API. */
@@ -125,34 +115,4 @@ export async function fetchRepo(
 
 	const languages = await fetchLanguages(owner, name, fetchFn, token);
 	return toRepo((await res.json()) as GithubRepo, languages);
-}
-
-/**
- * Returns the user's public repos, most-recently-pushed first.
- * Throws on a non-OK response so the load function can surface the error.
- */
-export async function fetchRepos(
-	user: string,
-	fetchFn: typeof fetch,
-	{ token, excludeForks = true }: FetchOptions = {}
-): Promise<Repo[]> {
-	// per_page=100 grabs everything in one request for any realistic account.
-	const res = await fetchFn(
-		`https://api.github.com/users/${encodeURIComponent(user)}/repos?per_page=100&sort=pushed`,
-		{ headers: ghHeaders(token) }
-	);
-
-	if (!res.ok) {
-		const body = await res.text();
-		throw new Error(`GitHub API ${res.status} for "${user}": ${body.slice(0, 200)}`);
-	}
-
-	const repos = (await res.json()) as GithubRepo[];
-
-	return repos
-		.filter((r) => (excludeForks ? !r.fork && !r.archived : true))
-		.sort((a, b) => b.pushed_at.localeCompare(a.pushed_at))
-		// The list view shows only the primary `language`, so we skip the extra
-		// per-repo `/languages` call here: `languages` defaults to empty.
-		.map((r) => toRepo(r));
 }

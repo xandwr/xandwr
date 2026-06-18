@@ -7,7 +7,7 @@
 // The folder name is the slug. Each SKILL.md needs YAML frontmatter with
 // `name` and `description` (the same fields the discovery index requires).
 
-import { renderMarkdown } from "./blog";
+import { renderMarkdown } from "./markdown";
 
 export type SkillFrontmatter = {
 	name: string;

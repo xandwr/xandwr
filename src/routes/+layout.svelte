@@ -56,12 +56,6 @@
 
 	<!-- Tell agents where the machine-readable map lives. -->
 	<link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
-	<link
-		rel="alternate"
-		type="application/rss+xml"
-		href="/blog/feed.xml"
-		title="{site.author}: blog"
-	/>
 
 	<!-- Open Graph -->
 	<meta property="og:type" content="website" />

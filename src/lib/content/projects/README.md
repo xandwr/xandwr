@@ -25,7 +25,6 @@ order: 1                  # optional → explicit sort (ascending); unset sorts 
 demo: https://…           # optional → live/demo link (video, deployed app)
 cover: /projects/slug/cover.png   # optional → hero media (see note below)
 tags: [embedded, firmware]        # optional
-writeup: my-build-log     # optional → slug of a long-form post in /blog
 hidden: false             # optional → keep the folder but hide the card
 
 # Fallback cache (used only if the GitHub lookup fails):
@@ -36,8 +35,8 @@ forks: 0                  # optional cached fork count
 ---
 
 Optional markdown body below the frontmatter renders as a short blurb on the
-card (same `marked` + Shiki pipeline as the blog). For a full build log, write
-a real /blog post and point `writeup:` at its slug instead.
+card (the shared `marked` + Shiki pipeline). It shows on the project's detail
+page at `/projects/<slug>`.
 ```
 
 ## Media

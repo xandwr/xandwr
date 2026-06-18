@@ -1,11 +1,10 @@
-// /llms-full.txt: the full-content companion to /llms.txt: the complete resume,
-// the live project list, and every blog post's source, concatenated into one
-// plaintext document an agent can ingest in a single fetch.
+// /llms-full.txt: the full-content companion to /llms.txt: the complete resume
+// and the curated project list, concatenated into one plaintext document an
+// agent can ingest in a single fetch.
 
 import { env } from "$env/dynamic/private";
-import { getBlogPosts, getBlogPost } from "$lib/content/blog";
+import { getCuratedProjects } from "$lib/content/projects";
 import { fullResumeMarkdown } from "$lib/content/resume-export";
-import { fetchRepos } from "$lib/github";
 import { site } from "$lib/site";
 import type { RequestHandler } from "./$types";
 
@@ -18,32 +17,15 @@ export const GET: RequestHandler = async ({ fetch }) => {
 	// Resume
 	parts.push("\n---\n", fullResumeMarkdown());
 
-	// Projects (best-effort; never fail the whole document on a GitHub hiccup)
-	parts.push("\n---\n", "# Projects (live from GitHub)");
-	try {
-		const repos = await fetchRepos(site.githubUser, fetch, { token: env.GITHUB_TOKEN });
-		for (const repo of repos) {
-			parts.push(
-				`\n## ${repo.name}`,
-				`*${repo.language}* · ★${repo.stars} · ⑂${repo.forks} · ${repo.url}`,
-				repo.description,
-			);
-		}
-	} catch (e) {
-		parts.push(`_(project list temporarily unavailable: ${e instanceof Error ? e.message : "error"})_`);
-	}
-
-	// Blog posts (full source)
-	parts.push("\n---\n", "# Blog");
-	for (const summary of getBlogPosts()) {
-		const post = getBlogPost(summary.slug);
-		if (!post) continue;
+	// Projects: the same curated set as /projects, hydrated from GitHub with a
+	// per-project fallback to local frontmatter, so this never fails the page.
+	parts.push("\n---\n", "# Projects");
+	const projects = await getCuratedProjects(fetch, env.GITHUB_TOKEN);
+	for (const project of projects) {
 		parts.push(
-			`\n## ${post.title}`,
-			`*Published ${post.published} · last edited ${post.lastEdited}*`,
-			`> ${post.description}`,
-			"",
-			post.content,
+			`\n## ${project.name}`,
+			`*${project.language}* · ★${project.stars} · ⑂${project.forks} · ${project.url}`,
+			project.description,
 		);
 	}
 

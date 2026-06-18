@@ -74,7 +74,7 @@
             </div>
 
             {#if project.bodyHtml}
-                <div class="blog-post">
+                <div class="prose">
                     {@html project.bodyHtml}
                 </div>
             {/if}
@@ -89,13 +89,6 @@
                         View source <span aria-hidden="true">↗</span>
                     </a>
                 </p>
-                {#if project.writeup}
-                    <p class="status-bar-field">
-                        <a href="/blog/{project.writeup}">
-                            Read the writeup <span aria-hidden="true">→</span>
-                        </a>
-                    </p>
-                {/if}
                 {#if project.demo}
                     <p class="status-bar-field">
                         <a
@@ -117,61 +110,61 @@
 </div>
 
 <style>
-    .blog-post :global(h2),
-    .blog-post :global(h3) {
+    .prose :global(h2),
+    .prose :global(h3) {
         margin: 22px 0 8px;
     }
 
-    .blog-post :global(h2) {
+    .prose :global(h2) {
         font-size: 22px;
         line-height: 26px;
     }
 
-    .blog-post :global(p),
-    .blog-post :global(ul),
-    .blog-post :global(blockquote),
-    .blog-post :global(pre) {
+    .prose :global(p),
+    .prose :global(ul),
+    .prose :global(blockquote),
+    .prose :global(pre) {
         margin: 0 0 12px;
     }
 
-    .blog-post :global(ul) {
+    .prose :global(ul) {
         padding-left: 18px;
     }
 
-    .blog-post :global(li + li) {
+    .prose :global(li + li) {
         margin-top: 6px;
     }
 
-    .blog-post :global(blockquote) {
+    .prose :global(blockquote) {
         border-left: 2px solid gray;
         padding-left: 8px;
     }
 
-    .blog-post :global(pre) {
+    .prose :global(pre) {
         overflow-x: auto;
         white-space: pre;
     }
 
-    .blog-post :global(pre.shiki) {
+    .prose :global(pre.shiki) {
         padding: 10px 12px;
         border: 1px solid #000;
         box-shadow: inset -1px -1px #555, inset 1px 1px #fff;
         background: #0d1117 !important;
     }
 
-    .blog-post :global(pre.shiki code),
-    .blog-post :global(pre.shiki code span) {
+    .prose :global(pre.shiki code),
+    .prose :global(pre.shiki code span) {
         font-family: "BigBlueTerm437", monospace;
     }
 
-    .blog-post :global(pre.shiki code) {
+    .prose :global(pre.shiki code) {
         display: block;
         background: transparent !important;
         font-size: 14px;
         line-height: 18px;
     }
 
-    .blog-post :global(hr) {
+    .prose :global(hr) {
         border: 0;
         border-top: 1px solid gray;
         margin: 16px 0;

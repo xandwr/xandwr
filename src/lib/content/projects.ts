@@ -4,7 +4,7 @@
 //
 // GitHub is the *base* layer (live stars/forks/language/description) and the
 // PROJECT.md frontmatter is the *override + enrichment* layer (curated title,
-// tagline, ordering, demo link, writeup, cover). Frontmatter also doubles as a
+// tagline, ordering, demo link, cover). Frontmatter also doubles as a
 // fallback cache: if the GitHub API is unreachable or rate-limited, the card
 // still renders from whatever local values are present instead of erroring.
 //
@@ -15,7 +15,7 @@
 // See ./projects/README.md for the authoring convention and a template.
 
 import { fetchRepo, type Repo } from "$lib/github";
-import { renderMarkdown } from "./blog";
+import { renderMarkdown } from "./markdown";
 
 /**
  * The PROJECT.md frontmatter schema. Everything except `repo` is optional;
@@ -38,8 +38,6 @@ export type ProjectFrontmatter = {
 	cover?: string;
 	/** Free-form tags for grouping/filtering. */
 	tags?: string[];
-	/** Slug of a long-form build log in /blog, if one exists. */
-	writeup?: string;
 	/** Hide without deleting the folder (drafts). */
 	hidden?: boolean;
 
@@ -71,7 +69,6 @@ export type CuratedProject = {
 	demo?: string;
 	cover?: string;
 	tags: string[];
-	writeup?: string;
 	featured: boolean;
 	/** Rendered HTML of the PROJECT.md body, if it has one below the frontmatter. */
 	bodyHtml?: string;
@@ -173,7 +170,6 @@ async function merge(src: ProjectSource, repo: Repo | null): Promise<CuratedProj
 		demo: fm.demo,
 		cover: fm.cover,
 		tags: fm.tags ?? [],
-		writeup: fm.writeup,
 		featured: fm.featured ?? false,
 		bodyHtml: body ? await renderMarkdown(body) : undefined,
 		live: repo !== null,
